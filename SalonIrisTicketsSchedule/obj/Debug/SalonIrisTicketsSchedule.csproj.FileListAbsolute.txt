@@ -1,0 +1,34 @@
+D:\visualcprojects\SalonIrisTicketsSchedule\SalonIrisTicketsSchedule\bin\Debug\SalonIrisTicketsSchedule.exe.config
+D:\visualcprojects\SalonIrisTicketsSchedule\SalonIrisTicketsSchedule\bin\Debug\SalonIrisTicketsSchedule.exe
+D:\visualcprojects\SalonIrisTicketsSchedule\SalonIrisTicketsSchedule\bin\Debug\SalonIrisTicketsSchedule.pdb
+D:\visualcprojects\SalonIrisTicketsSchedule\SalonIrisTicketsSchedule\obj\Debug\SalonIrisTicketsSchedule.Form1.resources
+D:\visualcprojects\SalonIrisTicketsSchedule\SalonIrisTicketsSchedule\obj\Debug\SalonIrisTicketsSchedule.Properties.Resources.resources
+D:\visualcprojects\SalonIrisTicketsSchedule\SalonIrisTicketsSchedule\obj\Debug\SalonIrisTicketsSchedule.csproj.GenerateResource.Cache
+D:\visualcprojects\SalonIrisTicketsSchedule\SalonIrisTicketsSchedule\obj\Debug\SalonIrisTicketsSchedule.exe
+D:\visualcprojects\SalonIrisTicketsSchedule\SalonIrisTicketsSchedule\obj\Debug\SalonIrisTicketsSchedule.pdb
+D:\visualcprojects\SalonIrisTicketsSchedule\SalonIrisTicketsSchedule\obj\Debug\SalonIrisTicketsSchedule.Form2.resources
+D:\visualcprojects\SalonIrisTicketsSchedule\SalonIrisTicketsSchedule\bin\Debug\Config\SalonIrisScheduler.txt
+D:\visualcprojects\SalonIrisTicketsSchedule\SalonIrisTicketsSchedule\obj\Debug\SalonIrisTicketsSchedule.csprojResolveAssemblyReference.cache
+C:\Users\alvar\Desktop\Trabajo x\SalonIrisTicketsSchedule\SalonIrisTicketsSchedule\bin\Debug\Config\SalonIrisScheduler.txt
+C:\Users\alvar\Desktop\Trabajo x\SalonIrisTicketsSchedule\SalonIrisTicketsSchedule\bin\Debug\SalonIrisTicketsSchedule.exe.config
+C:\Users\alvar\Desktop\Trabajo x\SalonIrisTicketsSchedule\SalonIrisTicketsSchedule\bin\Debug\SalonIrisTicketsSchedule.exe
+C:\Users\alvar\Desktop\Trabajo x\SalonIrisTicketsSchedule\SalonIrisTicketsSchedule\bin\Debug\SalonIrisTicketsSchedule.pdb
+C:\Users\alvar\Desktop\Trabajo x\SalonIrisTicketsSchedule\SalonIrisTicketsSchedule\obj\Debug\SalonIrisTicketsSchedule.csprojAssemblyReference.cache
+C:\Users\alvar\Desktop\Trabajo x\SalonIrisTicketsSchedule\SalonIrisTicketsSchedule\obj\Debug\SalonIrisTicketsSchedule.Form1.resources
+C:\Users\alvar\Desktop\Trabajo x\SalonIrisTicketsSchedule\SalonIrisTicketsSchedule\obj\Debug\SalonIrisTicketsSchedule.Form2.resources
+C:\Users\alvar\Desktop\Trabajo x\SalonIrisTicketsSchedule\SalonIrisTicketsSchedule\obj\Debug\SalonIrisTicketsSchedule.Properties.Resources.resources
+C:\Users\alvar\Desktop\Trabajo x\SalonIrisTicketsSchedule\SalonIrisTicketsSchedule\obj\Debug\SalonIrisTicketsSchedule.csproj.GenerateResource.cache
+C:\Users\alvar\Desktop\Trabajo x\SalonIrisTicketsSchedule\SalonIrisTicketsSchedule\obj\Debug\SalonIrisTicketsSchedule.csproj.CoreCompileInputs.cache
+C:\Users\alvar\Desktop\Trabajo x\SalonIrisTicketsSchedule\SalonIrisTicketsSchedule\obj\Debug\SalonIrisTicketsSchedule.exe
+C:\Users\alvar\Desktop\Trabajo x\SalonIrisTicketsSchedule\SalonIrisTicketsSchedule\obj\Debug\SalonIrisTicketsSchedule.pdb
+C:\dev\SalonIrisTicketsSchedule\SalonIrisTicketsSchedule\bin\Debug\SalonIrisTicketsSchedule.exe.config
+C:\dev\SalonIrisTicketsSchedule\SalonIrisTicketsSchedule\bin\Debug\SalonIrisTicketsSchedule.exe
+C:\dev\SalonIrisTicketsSchedule\SalonIrisTicketsSchedule\bin\Debug\SalonIrisTicketsSchedule.pdb
+C:\dev\SalonIrisTicketsSchedule\SalonIrisTicketsSchedule\obj\Debug\SalonIrisTicketsSchedule.csproj.AssemblyReference.cache
+C:\dev\SalonIrisTicketsSchedule\SalonIrisTicketsSchedule\obj\Debug\SalonIrisTicketsSchedule.Form1.resources
+C:\dev\SalonIrisTicketsSchedule\SalonIrisTicketsSchedule\obj\Debug\SalonIrisTicketsSchedule.Form2.resources
+C:\dev\SalonIrisTicketsSchedule\SalonIrisTicketsSchedule\obj\Debug\SalonIrisTicketsSchedule.Properties.Resources.resources
+C:\dev\SalonIrisTicketsSchedule\SalonIrisTicketsSchedule\obj\Debug\SalonIrisTicketsSchedule.csproj.GenerateResource.cache
+C:\dev\SalonIrisTicketsSchedule\SalonIrisTicketsSchedule\obj\Debug\SalonIrisTicketsSchedule.csproj.CoreCompileInputs.cache
+C:\dev\SalonIrisTicketsSchedule\SalonIrisTicketsSchedule\obj\Debug\SalonIrisTicketsSchedule.exe
+C:\dev\SalonIrisTicketsSchedule\SalonIrisTicketsSchedule\obj\Debug\SalonIrisTicketsSchedule.pdb
