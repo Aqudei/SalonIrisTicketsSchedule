@@ -15,12 +15,6 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_3E21AE2042794030B7717C04684F2223"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_71370D5376B64DB0A4CCA14B28377139"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -76,10 +70,10 @@
             "ComponentsUrl" = "8:"
                 "Items"
                 {
-                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.5"
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.8"
                     {
-                    "Name" = "8:Microsoft .NET Framework 4.5 (x86 and x64)"
-                    "ProductCode" = "8:.NETFramework,Version=v4.5"
+                    "Name" = "8:Microsoft .NET Framework 4.8 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.8"
                     }
                 }
             }
@@ -136,7 +130,7 @@
                 {
                 "Name" = "8:.NET Framework"
                 "Message" = "8:[VSDNETMSG]"
-                "FrameworkVersion" = "8:v4.5"
+                "FrameworkVersion" = "8:.NETFramework,Version=v4.8"
                 "AllowLaterVersions" = "11:FALSE"
                 "InstallUrl" = "8:http://go.microsoft.com/fwlink/?LinkId=395269"
                 }
@@ -144,26 +138,6 @@
         }
         "File"
         {
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3E21AE2042794030B7717C04684F2223"
-            {
-            "SourcePath" = "8:C:\\Windows\\System32\\msiexec.exe"
-            "TargetName" = "8:msiexec.exe"
-            "Tag" = "8:"
-            "Folder" = "8:_4920F9D1C0B946BCB8CA700D344F4066"
-            "Condition" = "8:Not Installed"
-            "Transitive" = "11:TRUE"
-            "Vital" = "11:FALSE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:TRUE"
-            "Permanent" = "11:TRUE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_85F92143B76FD7FF0284872ACE6A4E22"
             {
             "AssemblyRegister" = "3:1"
@@ -305,7 +279,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:AirportSalonSoftware"
         "ProductCode" = "8:{F5DEDB16-8318-4148-BFDF-1D4BC30463CC}"
-        "PackageCode" = "8:{F17484DE-861A-4528-B2C9-CA45FA3026F4}"
+        "PackageCode" = "8:{EE210E80-630C-4257-91DB-68E9F158CB15}"
         "UpgradeCode" = "8:{76C16EE4-F4F6-4BEB-9045-B2245D0DFF0F}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -425,20 +399,6 @@
         }
         "Shortcut"
         {
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_222B594AAE824123AE5418072691F85A"
-            {
-            "Name" = "8:Uninstall"
-            "Arguments" = "8:/x {C4A6D383-989D-40AE-83A1-9B8159F419ED} /qr"
-            "Description" = "8:"
-            "ShowCmd" = "3:1"
-            "IconIndex" = "3:0"
-            "Transitive" = "11:FALSE"
-            "Target" = "8:_3E21AE2042794030B7717C04684F2223"
-            "Folder" = "8:_17239939D82E49EA9002D319B1196513"
-            "WorkingFolder" = "8:_4920F9D1C0B946BCB8CA700D344F4066"
-            "Icon" = "8:"
-            "Feature" = "8:"
-            }
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_449904F804CD43F6BC46B277C46C8467"
             {
             "Name" = "8:AirportSalonSoftware"

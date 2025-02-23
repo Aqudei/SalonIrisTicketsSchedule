@@ -18,6 +18,7 @@ obj/
 *.sdf
 *.sqlite
 *.tlog
+*.msi
 
 # NuGet packages
 *.nupkg
