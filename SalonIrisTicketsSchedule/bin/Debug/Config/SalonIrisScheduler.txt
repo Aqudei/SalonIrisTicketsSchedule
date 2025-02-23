@@ -1,7 +1,0 @@
-Chiquicuts
-LAPTOP-DB8A9BOL\SQLEXPRESS
-SalonIris
-Administrator
-
-True
-4

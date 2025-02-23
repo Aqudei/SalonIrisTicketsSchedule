@@ -1,0 +1,61 @@
+# Visual Studio specific files
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Build artifacts
+bin/
+obj/
+*.dll
+*.exe
+*.pdb
+*.cache
+*.ilk
+*.log
+*.ncb
+*.sdf
+*.sqlite
+*.tlog
+
+# NuGet packages
+*.nupkg
+packages/
+project.lock.json
+PackageRestoreLogs/
+# Uncomment if using NuGet Package Manager
+# !packages/build/
+
+# Windows related files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Publish files
+publish/
+*.publishproj
+
+# Resharper files
+_ReSharper*/
+*.DotSettings.user
+
+# Rider files
+.idea/
+
+# Azure related files
+*.azurePubxml
+
+# IIS Express
+/.vs/
+AppData/
+
+# Other IDE files
+*.csproj.user
+*.dbmdl
+*.jfm
+
+# Backup files
+*.bak
+*.old
+*.orig

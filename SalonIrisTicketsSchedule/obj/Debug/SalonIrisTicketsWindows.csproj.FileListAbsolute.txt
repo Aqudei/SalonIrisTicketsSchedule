@@ -1,3 +1,0 @@
-D:\visualcprojects\SalonIrisTicketsSchedule\SalonIrisTicketsSchedule\bin\Debug\SalonIrisTicketsSchedule.exe.config
-D:\visualcprojects\SalonIrisTicketsSchedule\SalonIrisTicketsSchedule\obj\Debug\SalonIrisTicketsSchedule.exe
-D:\visualcprojects\SalonIrisTicketsSchedule\SalonIrisTicketsSchedule\obj\Debug\SalonIrisTicketsSchedule.pdb
