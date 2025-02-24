@@ -40,8 +40,6 @@ namespace SalonIrisTicketsSchedule
 
         private void button1_Click(object sender, EventArgs e)
         {
-
-
             Server = confserver.Text;
             Database = confdb.Text;
             Company = confcompany.Text;
@@ -80,14 +78,10 @@ namespace SalonIrisTicketsSchedule
             string[] lines = { Company, Server, Database, DBUser, DBPass, SSPI.ToString(), ApptNum.ToString() };
             // WriteAllLines creates a file, writes a collection of strings to the file,
             // and then closes the file.  You do NOT need to call Flush() or Close().
+            Directory.CreateDirectory(Path.GetDirectoryName(ConfigPath));
             File.WriteAllLines(ConfigPath, lines);
             //}
 
-
-            string datetoday = "";
-            datetoday = DateTime.Now.ToString("yyyy-MM-dd");
-            //timenow = DateTime.Now.ToString("hh:mm:ss");
-            //MessageBox.Show(datetoday);
 
             timer1.Enabled = true;
             timer1.Interval = 12000; // in miliseconds
@@ -136,8 +130,6 @@ namespace SalonIrisTicketsSchedule
         {
             Task.Run(() => tickets.RefreshScreen(frm2));
         }
-
-
 
         public class Tickets
         {
@@ -282,35 +274,69 @@ OR(CAST('" + timenow + @"' AS time) BETWEEN CAST(S.fldStart5 AS time) AND CAST(S
 OR(CAST('" + timenow + @"' AS time) BETWEEN CAST(S.fldStart6 AS time) AND CAST(S.fldEnd6 AS time))
 ); ";*/
 
-                    string query1 = @"SELECT 
-E.fldEmployeeID AS ID, 
-E.fldFirstName + ISNULL(' ' + E.fldLastName, '') as FirstName, 
-S.fldDate as Date, 
-S.fldStart as Start, S.fldEnd as DEnd, 
-S.fldStart2 as Start2, S.fldEnd2 as DEnd2, 
-S.fldStart3 as Start3, S.fldEnd3 as DEnd3, 
-S.fldStart4 as Start4, S.fldEnd4 as DEnd4, 
-S.fldStart5 as Start5, S.fldEnd5 as DEnd5, 
-S.fldStart6 as Start6, S.fldEnd6 as DEnd6 
-FROM tblScheduling S Join tblEmployees E on S.fldEmployeeID=E.fldEmployeeID where 
-S.fldDate='" + datetoday + @"' AND (
-('" + timeforquery2 + @"' BETWEEN convert(datetime, '" + datetoday + @"' +' ' +LTRIM(RIGHT(CONVERT(VARCHAR(20), S.fldStart, 120), 8))) AND convert(datetime, '" + datetoday + @"' +' ' +LTRIM(RIGHT(CONVERT(VARCHAR(20), S.fldEnd, 120), 8))))
-OR('" + timeforquery2 + @"' BETWEEN convert(datetime, '" + datetoday + @"' +' ' +LTRIM(RIGHT(CONVERT(VARCHAR(20), S.fldStart2, 120), 8))) AND convert(datetime, '" + datetoday + @"' +' ' +LTRIM(RIGHT(CONVERT(VARCHAR(20), S.fldEnd2, 120), 8))))
-OR('" + timeforquery2 + @"' BETWEEN convert(datetime, '" + datetoday + @"' +' ' +LTRIM(RIGHT(CONVERT(VARCHAR(20), S.fldStart3, 120), 8))) AND convert(datetime, '" + datetoday + @"' +' ' +LTRIM(RIGHT(CONVERT(VARCHAR(20), S.fldEnd3, 120), 8))))
-OR('" + timeforquery2 + @"' BETWEEN convert(datetime, '" + datetoday + @"' +' ' +LTRIM(RIGHT(CONVERT(VARCHAR(20), S.fldStart4, 120), 8))) AND convert(datetime, '" + datetoday + @"' +' ' +LTRIM(RIGHT(CONVERT(VARCHAR(20), S.fldEnd4, 120), 8))))
-OR('" + timeforquery2 + @"' BETWEEN convert(datetime, '" + datetoday + @"' +' ' +LTRIM(RIGHT(CONVERT(VARCHAR(20), S.fldStart5, 120), 8))) AND convert(datetime, '" + datetoday + @"' +' ' +LTRIM(RIGHT(CONVERT(VARCHAR(20), S.fldEnd5, 120), 8))))
-OR('" + timeforquery2 + @"' BETWEEN convert(datetime, '" + datetoday + @"' +' ' +LTRIM(RIGHT(CONVERT(VARCHAR(20), S.fldStart6, 120), 8))) AND convert(datetime, '" + datetoday + @"' +' ' +LTRIM(RIGHT(CONVERT(VARCHAR(20), S.fldEnd6, 120), 8))))
-); ";
+                    string query1 = @"
+                        SELECT 
+                            E.fldEmployeeID AS ID, 
+                            E.fldFirstName + ISNULL(' ' + E.fldLastName, '') AS FirstName, 
+                            S.fldDate AS Date, 
+                            S.fldStart AS Start, 
+                            S.fldEnd AS DEnd, 
+                            S.fldStart2 AS Start2, 
+                            S.fldEnd2 AS DEnd2, 
+                            S.fldStart3 AS Start3, 
+                            S.fldEnd3 AS DEnd3, 
+                            S.fldStart4 AS Start4, 
+                            S.fldEnd4 AS DEnd4, 
+                            S.fldStart5 AS Start5, 
+                            S.fldEnd5 AS DEnd5, 
+                            S.fldStart6 AS Start6, 
+                            S.fldEnd6 AS DEnd6 
+                        FROM 
+                            tblScheduling S 
+                            JOIN tblEmployees E ON S.fldEmployeeID = E.fldEmployeeID 
+                        WHERE 
+                            S.fldDate = '" + datetoday + @"' 
+                            AND (
+                                ('" + timeforquery2 + @"' BETWEEN 
+                                    CONVERT(datetime, '" + datetoday + @"' + ' ' + LTRIM(RIGHT(CONVERT(VARCHAR(20), S.fldStart, 120), 8))) 
+                                    AND 
+                                    CONVERT(datetime, '" + datetoday + @"' + ' ' + LTRIM(RIGHT(CONVERT(VARCHAR(20), S.fldEnd, 120), 8)))
+                                )
+                                OR ('" + timeforquery2 + @"' BETWEEN 
+                                    CONVERT(datetime, '" + datetoday + @"' + ' ' + LTRIM(RIGHT(CONVERT(VARCHAR(20), S.fldStart2, 120), 8))) 
+                                    AND 
+                                    CONVERT(datetime, '" + datetoday + @"' + ' ' + LTRIM(RIGHT(CONVERT(VARCHAR(20), S.fldEnd2, 120), 8)))
+                                )
+                                OR ('" + timeforquery2 + @"' BETWEEN 
+                                    CONVERT(datetime, '" + datetoday + @"' + ' ' + LTRIM(RIGHT(CONVERT(VARCHAR(20), S.fldStart3, 120), 8))) 
+                                    AND 
+                                    CONVERT(datetime, '" + datetoday + @"' + ' ' + LTRIM(RIGHT(CONVERT(VARCHAR(20), S.fldEnd3, 120), 8)))
+                                )
+                                OR ('" + timeforquery2 + @"' BETWEEN 
+                                    CONVERT(datetime, '" + datetoday + @"' + ' ' + LTRIM(RIGHT(CONVERT(VARCHAR(20), S.fldStart4, 120), 8))) 
+                                    AND 
+                                    CONVERT(datetime, '" + datetoday + @"' + ' ' + LTRIM(RIGHT(CONVERT(VARCHAR(20), S.fldEnd4, 120), 8)))
+                                )
+                                OR ('" + timeforquery2 + @"' BETWEEN 
+                                    CONVERT(datetime, '" + datetoday + @"' + ' ' + LTRIM(RIGHT(CONVERT(VARCHAR(20), S.fldStart5, 120), 8))) 
+                                    AND 
+                                    CONVERT(datetime, '" + datetoday + @"' + ' ' + LTRIM(RIGHT(CONVERT(VARCHAR(20), S.fldEnd5, 120), 8)))
+                                )
+                                OR ('" + timeforquery2 + @"' BETWEEN 
+                                    CONVERT(datetime, '" + datetoday + @"' + ' ' + LTRIM(RIGHT(CONVERT(VARCHAR(20), S.fldStart6, 120), 8))) 
+                                    AND 
+                                    CONVERT(datetime, '" + datetoday + @"' + ' ' + LTRIM(RIGHT(CONVERT(VARCHAR(20), S.fldEnd6, 120), 8)))
+                                )
+                            );";
 
-                    //LTRIM(RIGHT(CONVERT(VARCHAR(20), S.fldStart, 120), 8))
-                    //MessageBox.Show(query1);
+
                     try
                     {
                         using (SqlConnection connection = new SqlConnection(ConnectionString))
                         using (SqlCommand cmd = new SqlCommand(query1, connection))
                         {
                             //MessageBox.Show("waiting");
-
+                            cmd.CommandTimeout = 0;
                             connection.Open();
                             using (SqlDataReader reader = cmd.ExecuteReader())
                             {
@@ -360,23 +386,60 @@ or ('" + datetoday + @" " + timeforquery[ticketsid] + @"' BETWEEN convert(dateti
 or ('" + datetoday + @" " + timeforquery[ticketsid] + @"' BETWEEN convert(datetime, '" + datetoday + @"' +' ' +LTRIM(RIGHT(CONVERT(VARCHAR(20), SC.fldStart5, 120), 8))) AND convert(datetime, '" + datetoday + @"' +' ' +LTRIM(RIGHT(CONVERT(VARCHAR(20), SC.fldEnd5, 120), 8))))
 or ('" + datetoday + @" " + timeforquery[ticketsid] + @"' BETWEEN convert(datetime, '" + datetoday + @"' +' ' +LTRIM(RIGHT(CONVERT(VARCHAR(20), SC.fldStart6, 120), 8))) AND convert(datetime, '" + datetoday + @"' +' ' +LTRIM(RIGHT(CONVERT(VARCHAR(20), SC.fldEnd6, 120), 8))))
 ) order by t.fldTicketID DESC;";*/
-                                                string query2 = @"SELECT top 1 t.fldStartDateTime,  s.fldTicketStatus as fldTicketStatus, s.fldCompleted as fldCompleted, s.fldCheckedIn as fldCheckedIn, ISNULL('' + s.fldFirstName,'') + ISNULL(' ' + s.fldLastName, '')  as ClientName, t.fldDescription as Description 
-                        FROM tblTicketsRow t join tblTicketsSummary s on t.fldTicketID=s.fldTicketID  join tblScheduling SC on t.fldEmployeeID=SC.fldEmployeeID 
-                        where t.fldEmployeeID=" + IDDB + @" AND 
-                        ((t.fldStartDateTime <= '" + datetoday + @" " + timeforquery[ticketsid] + @"' 
-                        and t.fldEndDateTime >= '" + datetoday + @" " + timeforquery[ticketsid + 1] + @"' and s.fldTicketStatus!='Canceled') 
-                        ) and (('" + datetoday + @" " + timeforquery[ticketsid] + @"' BETWEEN convert(datetime, '" + datetoday + @"' +' ' +LTRIM(RIGHT(CONVERT(VARCHAR(20), SC.fldStart, 120), 8))) AND convert(datetime, '" + datetoday + @"' +' ' +LTRIM(RIGHT(CONVERT(VARCHAR(20), SC.fldEnd, 120), 8))))
-or ('" + datetoday + @" " + timeforquery[ticketsid] + @"' BETWEEN convert(datetime, '" + datetoday + @"' +' ' +LTRIM(RIGHT(CONVERT(VARCHAR(20), SC.fldStart2, 120), 8))) AND convert(datetime, '" + datetoday + @"' +' ' +LTRIM(RIGHT(CONVERT(VARCHAR(20), SC.fldEnd2, 120), 8))))
-or ('" + datetoday + @" " + timeforquery[ticketsid] + @"' BETWEEN convert(datetime, '" + datetoday + @"' +' ' +LTRIM(RIGHT(CONVERT(VARCHAR(20), SC.fldStart3, 120), 8))) AND convert(datetime, '" + datetoday + @"' +' ' +LTRIM(RIGHT(CONVERT(VARCHAR(20), SC.fldEnd3, 120), 8))))
-or ('" + datetoday + @" " + timeforquery[ticketsid] + @"' BETWEEN convert(datetime, '" + datetoday + @"' +' ' +LTRIM(RIGHT(CONVERT(VARCHAR(20), SC.fldStart4, 120), 8))) AND convert(datetime, '" + datetoday + @"' +' ' +LTRIM(RIGHT(CONVERT(VARCHAR(20), SC.fldEnd4, 120), 8))))
-or ('" + datetoday + @" " + timeforquery[ticketsid] + @"' BETWEEN convert(datetime, '" + datetoday + @"' +' ' +LTRIM(RIGHT(CONVERT(VARCHAR(20), SC.fldStart5, 120), 8))) AND convert(datetime, '" + datetoday + @"' +' ' +LTRIM(RIGHT(CONVERT(VARCHAR(20), SC.fldEnd5, 120), 8))))
-or ('" + datetoday + @" " + timeforquery[ticketsid] + @"' BETWEEN convert(datetime, '" + datetoday + @"' +' ' +LTRIM(RIGHT(CONVERT(VARCHAR(20), SC.fldStart6, 120), 8))) AND convert(datetime, '" + datetoday + @"' +' ' +LTRIM(RIGHT(CONVERT(VARCHAR(20), SC.fldEnd6, 120), 8))))
-) order by t.fldTicketID DESC;";
+                                                string query2 = @"
+                                                    SELECT TOP 1 
+                                                        t.fldStartDateTime,  
+                                                        s.fldTicketStatus AS fldTicketStatus, 
+                                                        s.fldCompleted AS fldCompleted, 
+                                                        s.fldCheckedIn AS fldCheckedIn, 
+                                                        ISNULL('' + s.fldFirstName, '') + ISNULL(' ' + s.fldLastName, '') AS ClientName, 
+                                                        t.fldDescription AS Description 
+                                                    FROM 
+                                                        tblTicketsRow t 
+                                                        JOIN tblTicketsSummary s ON t.fldTicketID = s.fldTicketID  
+                                                        JOIN tblScheduling SC ON t.fldEmployeeID = SC.fldEmployeeID 
+                                                    WHERE 
+                                                        t.fldEmployeeID = " + IDDB + @" 
+                                                        AND (
+                                                            (t.fldStartDateTime <= '" + datetoday + @" " + timeforquery[ticketsid] + @"' 
+                                                            AND t.fldEndDateTime >= '" + datetoday + @" " + timeforquery[ticketsid + 1] + @"' 
+                                                            AND s.fldTicketStatus != 'Canceled') 
+                                                        ) 
+                                                        AND (
+                                                            ('" + datetoday + @" " + timeforquery[ticketsid] + @"' 
+                                                                BETWEEN CONVERT(datetime, '" + datetoday + @"' + ' ' + LTRIM(RIGHT(CONVERT(VARCHAR(20), SC.fldStart, 120), 8))) 
+                                                                AND CONVERT(datetime, '" + datetoday + @"' + ' ' + LTRIM(RIGHT(CONVERT(VARCHAR(20), SC.fldEnd, 120), 8)))
+                                                            )
+                                                            OR ('" + datetoday + @" " + timeforquery[ticketsid] + @"' 
+                                                                BETWEEN CONVERT(datetime, '" + datetoday + @"' + ' ' + LTRIM(RIGHT(CONVERT(VARCHAR(20), SC.fldStart2, 120), 8))) 
+                                                                AND CONVERT(datetime, '" + datetoday + @"' + ' ' + LTRIM(RIGHT(CONVERT(VARCHAR(20), SC.fldEnd2, 120), 8)))
+                                                            )
+                                                            OR ('" + datetoday + @" " + timeforquery[ticketsid] + @"' 
+                                                                BETWEEN CONVERT(datetime, '" + datetoday + @"' + ' ' + LTRIM(RIGHT(CONVERT(VARCHAR(20), SC.fldStart3, 120), 8))) 
+                                                                AND CONVERT(datetime, '" + datetoday + @"' + ' ' + LTRIM(RIGHT(CONVERT(VARCHAR(20), SC.fldEnd3, 120), 8)))
+                                                            )
+                                                            OR ('" + datetoday + @" " + timeforquery[ticketsid] + @"' 
+                                                                BETWEEN CONVERT(datetime, '" + datetoday + @"' + ' ' + LTRIM(RIGHT(CONVERT(VARCHAR(20), SC.fldStart4, 120), 8))) 
+                                                                AND CONVERT(datetime, '" + datetoday + @"' + ' ' + LTRIM(RIGHT(CONVERT(VARCHAR(20), SC.fldEnd4, 120), 8)))
+                                                            )
+                                                            OR ('" + datetoday + @" " + timeforquery[ticketsid] + @"' 
+                                                                BETWEEN CONVERT(datetime, '" + datetoday + @"' + ' ' + LTRIM(RIGHT(CONVERT(VARCHAR(20), SC.fldStart5, 120), 8))) 
+                                                                AND CONVERT(datetime, '" + datetoday + @"' + ' ' + LTRIM(RIGHT(CONVERT(VARCHAR(20), SC.fldEnd5, 120), 8)))
+                                                            )
+                                                            OR ('" + datetoday + @" " + timeforquery[ticketsid] + @"' 
+                                                                BETWEEN CONVERT(datetime, '" + datetoday + @"' + ' ' + LTRIM(RIGHT(CONVERT(VARCHAR(20), SC.fldStart6, 120), 8))) 
+                                                                AND CONVERT(datetime, '" + datetoday + @"' + ' ' + LTRIM(RIGHT(CONVERT(VARCHAR(20), SC.fldEnd6, 120), 8)))
+                                                            )
+                                                        ) 
+                                                    ORDER BY 
+                                                        t.fldTicketID DESC;
+                                                ";
                                                 //MessageBox.Show(query2);
                                                 //MessageBox.Show(query2);
                                                 //return;
                                                 using (SqlCommand cmd2 = new SqlCommand(query2, connection))
                                                 {
+                                                    cmd2.CommandTimeout = 0;
                                                     using (SqlDataReader reader2 = cmd2.ExecuteReader())
                                                     {
                                                         // Check is the reader has any rows at all before starting to read.
@@ -443,9 +506,9 @@ or ('" + datetoday + @" " + timeforquery[ticketsid] + @"' BETWEEN convert(dateti
                                                 //persons.Add(p);
                                             }
                                         }
-                                        catch
+                                        catch (Exception ex)
                                         {
-                                            MessageBox.Show("There's a problem with the tickets table");
+                                            MessageBox.Show($"There's a problem with the tickets table.\n\n{ex.Message}");
                                             SafeInvoke(frm2, () => frm2.Close());
                                             System.Windows.Forms.Application.Exit();
                                             return;
@@ -457,9 +520,9 @@ or ('" + datetoday + @" " + timeforquery[ticketsid] + @"' BETWEEN convert(dateti
                             }
                         }
                     }
-                    catch
+                    catch (Exception ex)
                     {
-                        MessageBox.Show("There was a problem with the connection to the Server or Database. Please check your configuration");
+                        MessageBox.Show($"There was a problem with the connection to the Server or Database. Please check your configuration.\n\n{ex.Message}");
                         SafeInvoke(frm2, () => frm2.Close());
                         System.Windows.Forms.Application.Exit();
                         return;
@@ -492,7 +555,7 @@ or ('" + datetoday + @" " + timeforquery[ticketsid] + @"' BETWEEN convert(dateti
                         using (SqlCommand cmd3 = new SqlCommand(queryct, connection3))
                         {
                             //MessageBox.Show("waiting");
-
+                            cmd3.CommandTimeout = 0;
                             connection3.Open();
                             using (SqlDataReader reader3 = cmd3.ExecuteReader())
                             {
@@ -664,7 +727,7 @@ or ('" + datetoday + @" " + timeforquery[ticketsid] + @"' BETWEEN convert(dateti
                         using (SqlCommand cmd3 = new SqlCommand(query, connection3))
                         {
                             //MessageBox.Show("waiting");
-
+                            cmd3.CommandTimeout = 0;
                             connection3.Open();
                             using (SqlDataReader reader3 = cmd3.ExecuteReader())
                             {

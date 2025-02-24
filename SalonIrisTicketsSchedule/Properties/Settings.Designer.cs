@@ -22,5 +22,89 @@ namespace SalonIrisTicketsSchedule.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Company {
+            get {
+                return ((string)(this["Company"]));
+            }
+            set {
+                this["Company"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Server {
+            get {
+                return ((string)(this["Server"]));
+            }
+            set {
+                this["Server"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Database {
+            get {
+                return ((string)(this["Database"]));
+            }
+            set {
+                this["Database"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DBUser {
+            get {
+                return ((string)(this["DBUser"]));
+            }
+            set {
+                this["DBUser"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DBPass {
+            get {
+                return ((string)(this["DBPass"]));
+            }
+            set {
+                this["DBPass"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SSPI {
+            get {
+                return ((bool)(this["SSPI"]));
+            }
+            set {
+                this["SSPI"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int AppointmentNum {
+            get {
+                return ((int)(this["AppointmentNum"]));
+            }
+            set {
+                this["AppointmentNum"] = value;
+            }
+        }
     }
 }
