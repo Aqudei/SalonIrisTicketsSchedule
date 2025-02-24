@@ -22,7 +22,8 @@ namespace SalonIrisTicketsSchedule
         private string ConnectionString;
         private SqlConnection _connection;
         private int _currentPage;
-        private Form2 _form2;
+
+        private Form2 _form2 = new Form2();
 
         public HashSet<Models.Ticket> Tickets { get; set; } = new HashSet<Models.Ticket>();
 
@@ -35,7 +36,7 @@ namespace SalonIrisTicketsSchedule
         {
             LoadSettings();
 
-            
+
         }
 
         private void LoadSettings()
@@ -55,13 +56,11 @@ namespace SalonIrisTicketsSchedule
 
             ConnectionString = $"Data Source={Properties.Settings.Default.Server};Initial Catalog={Properties.Settings.Default.Database};Integrated Security={Properties.Settings.Default.SSPI};UID={Properties.Settings.Default.DBUser};PWD={Properties.Settings.Default.DBPass};MultipleActiveResultSets=True;";
 
-
-            _form2 = new Form2();
             _form2.Show();
 
-            // CycleTimer.Start();
+            CycleTimer.Start();
 
-            RefreshScreen();
+            // Task.Run(RefreshScreen);
             Hide();
         }
 
@@ -223,6 +222,39 @@ namespace SalonIrisTicketsSchedule
             return new List<Models.Schedule>();
         }
 
+        private string GetClosingTime(DateTime today)
+        {
+            string cmdText = $@"SELECT top 1
+                CASE
+                    WHEN fldEnd >= fldEnd2 AND fldEnd >= fldEnd3 AND fldEnd >= fldEnd4 AND fldEnd >= fldEnd5 AND fldEnd >= fldEnd6 THEN fldEnd
+                    WHEN fldEnd2 >= fldEnd AND fldEnd2 >= fldEnd3 AND fldEnd2 >= fldEnd4 AND fldEnd2 >= fldEnd5 AND fldEnd2 >= fldEnd6 THEN fldEnd2
+                    WHEN fldEnd3 >= fldEnd AND fldEnd3 >= fldEnd2 AND fldEnd3 >= fldEnd4 AND fldEnd3 >= fldEnd5 AND fldEnd3 >= fldEnd6 THEN fldEnd3
+                    WHEN fldEnd4 >= fldEnd AND fldEnd4 >= fldEnd2 AND fldEnd4 >= fldEnd4 AND fldEnd4 >= fldEnd5 AND fldEnd4 >= fldEnd6 THEN fldEnd4
+                    WHEN fldEnd5 >= fldEnd AND fldEnd5 >= fldEnd2 AND fldEnd5 >= fldEnd4 AND fldEnd5 >= fldEnd5 AND fldEnd5 >= fldEnd6 THEN fldEnd5
+                    WHEN fldEnd6 >= fldEnd AND fldEnd6 >= fldEnd2 AND fldEnd6 >= fldEnd4 AND fldEnd6 >= fldEnd5 AND fldEnd6 >= fldEnd6 THEN fldEnd6
+                    ELSE fldEnd
+                END AS MostRecentDate from tblScheduling where CAST(fldDate AS DATE) = CAST(@today AS DATE) order by MostRecentDate desc";
+            using (var connection = GetOpenConnection())
+            {
+                using (var cmd = new SqlCommand(cmdText, connection))
+                {
+                    cmd.Parameters.AddWithValue("@today", today);
+                    var reader = cmd.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            var ordinal = reader.GetOrdinal("MostRecentDate");
+                            var closingDateTime = reader.GetDateTime(ordinal);
+                            return closingDateTime.ToString("h:mm tt",new System.Globalization.CultureInfo("en-US"));
+                        }
+                        
+                    }
+
+                    return string.Empty;
+                }
+            }
+        }
 
         private List<Models.Ticket> GetTickets(DateTime date)
         {
@@ -370,7 +402,9 @@ namespace SalonIrisTicketsSchedule
 
                         var entry = new Entry
                         {
-                            Time = startTime.ToString("h:mm"),
+                            StartDateTime = startTime,
+                            EndDateTime = endTime,
+                            Time = $"{startTime:h:mm tt} - {endTime:h:mm tt}",
                             Stylist = schedules.FirstOrDefault(s => s.EmployeeID == schedule.EmployeeID)?.FirstName,
                             Client = client,
                             Status = ticket.TicketStatus == "Open" ? "Taken" : "Open",
@@ -385,7 +419,9 @@ namespace SalonIrisTicketsSchedule
                     {
                         entries.Add(new Entry
                         {
-                            Time = startTime.ToString("h:mm"),
+                            StartDateTime = startTime,
+                            EndDateTime = endTime,
+                            Time = $"{startTime:h:mm tt} - {endTime:h:mm tt}",
                             Stylist = schedules.FirstOrDefault(s => s.EmployeeID == schedule.EmployeeID)?.FirstName,
                             Client = "",
                             Status = "Available",
@@ -396,7 +432,7 @@ namespace SalonIrisTicketsSchedule
             }
 
             var totalPage = entries.Count / numRows;
-            DisplayEntries(entries, totalPage, _currentPage++, numRows);
+            DisplayEntries(now, entries, totalPage, _currentPage++, numRows);
             _currentPage = _currentPage % totalPage;
         }
         private static void SafeInvoke(Control control, Action action)
@@ -410,17 +446,31 @@ namespace SalonIrisTicketsSchedule
                 action();
             }
         }
-        private void DisplayEntries(List<Entry> entries, int totalPage, int pageNum, int perPage)
+        private void DisplayEntries(DateTime now, List<Entry> entries, int totalPage, int pageNum, int perPage)
         {
-            //var form2Type = frm2.GetType();
+            var pageItems = entries.Skip(pageNum * perPage).Take(perPage).OrderBy(i => i.StartDateTime).ToArray();
 
-            //SafeInvoke(frm2, () =>
-            //{
-            //    form2Type.GetProperty(string.Format("employee{0}", i + 1)).SetValue(frm2, getStylist2);
-            //    form2Type.GetProperty(string.Format("appt{0}", i + 1)).SetValue(frm2, getAppt(i + 1, currentpage));
-            //    form2Type.GetProperty(string.Format("stat{0}", i + 1)).SetValue(frm2, getStatus(i + 1, currentpage));
-            //    form2Type.GetProperty(string.Format("clientt{0}", i + 1)).SetValue(frm2, getClient(i + 1, currentpage));
-            //});
+            var showTime = $"{pageItems?.FirstOrDefault().StartDateTime:h:mm tt} to {pageItems.LastOrDefault()?.EndDateTime:h:mm tt}";
+            var closingTime = GetClosingTime(now.Date);
+
+            SafeInvoke(_form2, () => _form2.showtext = $"SHOWING TIME: {showTime}    TODAY CLOSING TIME: {closingTime}".ToUpper());
+            SafeInvoke(_form2, () => _form2.pagetext = "Page " + (pageNum+1) + " of " + totalPage);
+
+            var form2Type = _form2.GetType();
+
+            for (int i = 0; i < pageItems.Count(); i++)
+            {
+                var pageItem = pageItems[i];
+                SafeInvoke(_form2, () =>
+                {
+                    var prop = form2Type.GetProperty(string.Format("hora{0}", i + 1));
+                    form2Type.GetProperty(string.Format("hora{0}", i + 1)).SetValue(_form2, pageItem.Time);
+                    form2Type.GetProperty(string.Format("employee{0}", i + 1)).SetValue(_form2, pageItem.Stylist);
+                    form2Type.GetProperty(string.Format("appt{0}", i + 1)).SetValue(_form2, pageItem.Appointment);
+                    form2Type.GetProperty(string.Format("stat{0}", i + 1)).SetValue(_form2, pageItem.Status);
+                    form2Type.GetProperty(string.Format("clientt{0}", i + 1)).SetValue(_form2, pageItem.Client);
+                });
+            }
         }
     }
 }

@@ -60,3 +60,4 @@ AppData/
 *.bak
 *.old
 *.orig
+!publish/

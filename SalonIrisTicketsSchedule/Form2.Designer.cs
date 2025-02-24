@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.companyairport = new System.Windows.Forms.Label();
             this.timetitle = new System.Windows.Forms.Label();
             this.employeetitle = new System.Windows.Forms.Label();
@@ -66,9 +67,6 @@
             this.row8appt = new System.Windows.Forms.Label();
             this.row8status = new System.Windows.Forms.Label();
             this.row4employee = new System.Windows.Forms.Label();
-            this.showtime = new System.Windows.Forms.Label();
-            this.watch = new System.Windows.Forms.Label();
-            this.pagination = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.client1 = new System.Windows.Forms.Label();
             this.client2 = new System.Windows.Forms.Label();
@@ -78,6 +76,10 @@
             this.client5 = new System.Windows.Forms.Label();
             this.client7 = new System.Windows.Forms.Label();
             this.client8 = new System.Windows.Forms.Label();
+            this.showtime = new System.Windows.Forms.Label();
+            this.watch = new System.Windows.Forms.Label();
+            this.pagination = new System.Windows.Forms.Label();
+            this.WatchTimer = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -158,7 +160,7 @@
             this.statustitle.Size = new System.Drawing.Size(195, 72);
             this.statustitle.TabIndex = 4;
             this.statustitle.Text = "Status";
-            this.statustitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;            
+            this.statustitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // row2time
             // 
@@ -685,44 +687,6 @@
             this.row4employee.TabIndex = 18;
             this.row4employee.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // showtime
-            // 
-            this.showtime.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.showtime.Font = new System.Drawing.Font("Arial", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
-            this.showtime.Location = new System.Drawing.Point(0, 680);
-            this.showtime.Margin = new System.Windows.Forms.Padding(20, 10, 20, 10);
-            this.showtime.MinimumSize = new System.Drawing.Size(0, 30);
-            this.showtime.Name = "showtime";
-            this.showtime.Padding = new System.Windows.Forms.Padding(20, 10, 0, 0);
-            this.showtime.Size = new System.Drawing.Size(1008, 50);
-            this.showtime.TabIndex = 18;
-            this.showtime.Text = "SHOWING TIME:";
-            // 
-            // watch
-            // 
-            this.watch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.watch.AutoSize = true;
-            this.watch.Font = new System.Drawing.Font("Arial", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
-            this.watch.Location = new System.Drawing.Point(727, 23);
-            this.watch.Name = "watch";
-            this.watch.Padding = new System.Windows.Forms.Padding(0, 0, 20, 5);
-            this.watch.Size = new System.Drawing.Size(20, 29);
-            this.watch.TabIndex = 19;
-            // 
-            // pagination
-            // 
-            this.pagination.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pagination.Font = new System.Drawing.Font("Arial", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
-            this.pagination.ForeColor = System.Drawing.Color.Yellow;
-            this.pagination.Location = new System.Drawing.Point(0, 655);
-            this.pagination.Margin = new System.Windows.Forms.Padding(20, 0, 30, 20);
-            this.pagination.Name = "pagination";
-            this.pagination.Padding = new System.Windows.Forms.Padding(0, 1, 25, 0);
-            this.pagination.Size = new System.Drawing.Size(1008, 25);
-            this.pagination.TabIndex = 20;
-            this.pagination.Text = "PAGE 1 OF 3";
-            this.pagination.TextAlign = System.Drawing.ContentAlignment.BottomRight;
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -851,6 +815,50 @@
             this.client8.TabIndex = 46;
             this.client8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // showtime
+            // 
+            this.showtime.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.showtime.Font = new System.Drawing.Font("Arial", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+            this.showtime.Location = new System.Drawing.Point(0, 680);
+            this.showtime.Margin = new System.Windows.Forms.Padding(20, 10, 20, 10);
+            this.showtime.MinimumSize = new System.Drawing.Size(0, 30);
+            this.showtime.Name = "showtime";
+            this.showtime.Padding = new System.Windows.Forms.Padding(20, 10, 0, 0);
+            this.showtime.Size = new System.Drawing.Size(1008, 50);
+            this.showtime.TabIndex = 18;
+            this.showtime.Text = "SHOWING TIME:";
+            // 
+            // watch
+            // 
+            this.watch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.watch.AutoSize = true;
+            this.watch.Font = new System.Drawing.Font("Arial", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+            this.watch.Location = new System.Drawing.Point(727, 23);
+            this.watch.Name = "watch";
+            this.watch.Padding = new System.Windows.Forms.Padding(0, 0, 20, 5);
+            this.watch.Size = new System.Drawing.Size(20, 29);
+            this.watch.TabIndex = 19;
+            // 
+            // pagination
+            // 
+            this.pagination.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.pagination.Font = new System.Drawing.Font("Arial", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+            this.pagination.ForeColor = System.Drawing.Color.Yellow;
+            this.pagination.Location = new System.Drawing.Point(0, 655);
+            this.pagination.Margin = new System.Windows.Forms.Padding(20, 0, 30, 20);
+            this.pagination.Name = "pagination";
+            this.pagination.Padding = new System.Windows.Forms.Padding(0, 1, 25, 0);
+            this.pagination.Size = new System.Drawing.Size(1008, 25);
+            this.pagination.TabIndex = 20;
+            this.pagination.Text = "PAGE 1 OF 3";
+            this.pagination.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+            // 
+            // WatchTimer
+            // 
+            this.WatchTimer.Enabled = true;
+            this.WatchTimer.Interval = 500;
+            this.WatchTimer.Tick += new System.EventHandler(this.WatchTimer_Tick);
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -881,50 +889,51 @@
         private System.Windows.Forms.Label employeetitle;
         private System.Windows.Forms.Label appointmenttitle;
         private System.Windows.Forms.Label statustitle;
-        private System.Windows.Forms.Label row2time;
-        private System.Windows.Forms.Label row2employee;
-        private System.Windows.Forms.Label row2appt;
-        private System.Windows.Forms.Label row2status;
-        private System.Windows.Forms.Label row1time;
-        private System.Windows.Forms.Label row1employee;
-        private System.Windows.Forms.Label row1appt;
-        private System.Windows.Forms.Label row1status;
-        private System.Windows.Forms.Label row3time;
-        private System.Windows.Forms.Label row3employee;
-        private System.Windows.Forms.Label row3appt;
-        private System.Windows.Forms.Label row3status;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.Label row4time;
-        private System.Windows.Forms.Label row4employee;
-        private System.Windows.Forms.Label row4appt;
-        private System.Windows.Forms.Label row4status;
-        private System.Windows.Forms.Label row5time;
-        private System.Windows.Forms.Label row5employee;
-        private System.Windows.Forms.Label row5appt;
-        private System.Windows.Forms.Label row5status;
-        private System.Windows.Forms.Label row6time;
-        private System.Windows.Forms.Label row6employee;
-        private System.Windows.Forms.Label row6appt;
-        private System.Windows.Forms.Label row6status;
-        private System.Windows.Forms.Label row7time;
-        private System.Windows.Forms.Label row7employee;
-        private System.Windows.Forms.Label row7appt;
-        private System.Windows.Forms.Label row7status;
-        private System.Windows.Forms.Label row8time;
-        private System.Windows.Forms.Label row8employee;
-        private System.Windows.Forms.Label row8appt;
-        private System.Windows.Forms.Label row8status;
         private System.Windows.Forms.Label showtime;
         private System.Windows.Forms.Label watch;
         private System.Windows.Forms.Label pagination;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label client1;
-        private System.Windows.Forms.Label client2;
-        private System.Windows.Forms.Label client3;
-        private System.Windows.Forms.Label client4;
-        private System.Windows.Forms.Label client6;
-        private System.Windows.Forms.Label client5;
-        private System.Windows.Forms.Label client7;
-        private System.Windows.Forms.Label client8;
+        public System.Windows.Forms.Label row2time;
+        public System.Windows.Forms.Label row2employee;
+        public System.Windows.Forms.Label row2appt;
+        public System.Windows.Forms.Label row2status;
+        public System.Windows.Forms.Label row1time;
+        public System.Windows.Forms.Label row1employee;
+        public System.Windows.Forms.Label row1appt;
+        public System.Windows.Forms.Label row1status;
+        public System.Windows.Forms.Label row3time;
+        public System.Windows.Forms.Label row3employee;
+        public System.Windows.Forms.Label row3appt;
+        public System.Windows.Forms.Label row3status;
+        public System.Windows.Forms.Label row4time;
+        public System.Windows.Forms.Label row4employee;
+        public System.Windows.Forms.Label row4appt;
+        public System.Windows.Forms.Label row4status;
+        public System.Windows.Forms.Label row5time;
+        public System.Windows.Forms.Label row5employee;
+        public System.Windows.Forms.Label row5appt;
+        public System.Windows.Forms.Label row5status;
+        public System.Windows.Forms.Label row6time;
+        public System.Windows.Forms.Label row6employee;
+        public System.Windows.Forms.Label row6appt;
+        public System.Windows.Forms.Label row6status;
+        public System.Windows.Forms.Label row7time;
+        public System.Windows.Forms.Label row7employee;
+        public System.Windows.Forms.Label row7appt;
+        public System.Windows.Forms.Label row7status;
+        public System.Windows.Forms.Label row8time;
+        public System.Windows.Forms.Label row8employee;
+        public System.Windows.Forms.Label row8appt;
+        public System.Windows.Forms.Label row8status;
+        public System.Windows.Forms.Label client1;
+        public System.Windows.Forms.Label client2;
+        public System.Windows.Forms.Label client3;
+        public System.Windows.Forms.Label client4;
+        public System.Windows.Forms.Label client6;
+        public System.Windows.Forms.Label client5;
+        public System.Windows.Forms.Label client7;
+        public System.Windows.Forms.Label client8;
+        private System.Windows.Forms.Timer WatchTimer;
     }
 }

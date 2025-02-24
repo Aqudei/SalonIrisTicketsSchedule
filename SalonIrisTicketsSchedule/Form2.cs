@@ -836,13 +836,19 @@ namespace SalonIrisTicketsSchedule
         }
 
 
-
-
         private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
         {
             this.tableLayoutPanel1.CellPaint += new TableLayoutCellPaintEventHandler(tableLayoutPanel1_CellPaint);
         }
 
+        private void WatchTimer_Tick(object sender, EventArgs e)
+        {
+            DateTime dateTime = DateTime.Now;
+            string formattedDate = dateTime.ToString("MMMM d, yyyy h:mm tt");
 
+            Console.WriteLine(formattedDate);
+
+            watchtext = formattedDate;
+        }
     }
 }

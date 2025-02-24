@@ -609,6 +609,7 @@ or ('" + datetoday + @" " + timeforquery[ticketsid] + @"' BETWEEN convert(dateti
                         ampm2 = "PM";
                     if (ApptNum == 4)
                     {
+                        
                         SafeInvoke(frm2, () => frm2.showtext = "SHOWING TIME: " + Convert.ToDateTime(starttime).ToString("h:mm") + " " + ampm + " to " + Convert.ToDateTime(starttotime8).ToString("h:mm") + " " + ampm2 + "   TODAY CLOSING TIME: " + closingtime);
                     }
                     else

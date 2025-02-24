@@ -13,6 +13,7 @@ namespace SalonIrisTicketsSchedule.Models
         public string Status { get; set; }
         public string Appointment { get; set; }
         public string Client { get; set; }
-
+        public DateTime StartDateTime { get; internal set; }
+        public DateTime EndDateTime { get; internal set; }
     }
 }
