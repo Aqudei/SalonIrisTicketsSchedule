@@ -58,9 +58,10 @@ namespace SalonIrisTicketsSchedule
 
             _form2.Show();
 
+            Task.Run(RefreshScreen);
+
             CycleTimer.Start();
 
-            // Task.Run(RefreshScreen);
             Hide();
         }
 
@@ -246,9 +247,9 @@ namespace SalonIrisTicketsSchedule
                         {
                             var ordinal = reader.GetOrdinal("MostRecentDate");
                             var closingDateTime = reader.GetDateTime(ordinal);
-                            return closingDateTime.ToString("h:mm tt",new System.Globalization.CultureInfo("en-US"));
+                            return closingDateTime.ToString("h:mm tt", new System.Globalization.CultureInfo("en-US"));
                         }
-                        
+
                     }
 
                     return string.Empty;
@@ -347,15 +348,16 @@ namespace SalonIrisTicketsSchedule
 
         private void RefreshScreen()
         {
-            // var now = DateTime.Now;
+            var now = DateTime.Now;
 
-            var now = DateTime.Parse("2025-02-19 13:00");
+            // var now = DateTime.Parse("2025-02-19 14:00");
 
             var tickets = GetTickets(now.Date);
             var schedules = GetSchedules(now.Date);
 
-            var start = new DateTime(now.Year, now.Month, now.Day, now.Hour, 0, 0);
             var minutesIncrement = (int)(60 / Properties.Settings.Default.AppointmentNum);
+            var excess = now.Minute % minutesIncrement;
+            var start = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute - excess, 0);
 
             var numRows = Properties.Settings.Default.AppointmentNum == 4 ? 8 : 6;
             var entries = new List<Entry>();
@@ -405,7 +407,7 @@ namespace SalonIrisTicketsSchedule
                             StartDateTime = startTime,
                             EndDateTime = endTime,
                             Time = $"{startTime:h:mm tt} - {endTime:h:mm tt}",
-                            Stylist = schedules.FirstOrDefault(s => s.EmployeeID == schedule.EmployeeID)?.FirstName,
+                            Stylist = schedule.FirstName,
                             Client = client,
                             Status = ticket.TicketStatus == "Open" ? "Taken" : "Open",
                             Appointment = appointment
@@ -413,6 +415,60 @@ namespace SalonIrisTicketsSchedule
 
                         entries.Add(entry);
                         entryAdded = true;
+                        break;
+                    }
+
+                    if (!entryAdded)
+                    {
+                        
+                        var timeSlots = new List<Tuple<DateTime, DateTime>>
+{
+                            new Tuple<DateTime, DateTime>(
+                                (schedule.Date?.Date ?? DateTime.MinValue) + (schedule.Start?.TimeOfDay ?? TimeSpan.Zero),
+                                (schedule.Date?.Date ?? DateTime.MinValue) + (schedule.DEnd?.TimeOfDay ?? TimeSpan.Zero)
+                            ),
+                            new Tuple<DateTime, DateTime>(
+                                (schedule.Date?.Date ?? DateTime.MinValue) + (schedule.Start2?.TimeOfDay ?? TimeSpan.Zero),
+                                (schedule.Date?.Date ?? DateTime.MinValue) + (schedule.DEnd2?.TimeOfDay ?? TimeSpan.Zero)
+                            ),
+                            new Tuple<DateTime, DateTime>(
+                                (schedule.Date?.Date ?? DateTime.MinValue) + (schedule.Start3?.TimeOfDay ?? TimeSpan.Zero),
+                                (schedule.Date?.Date ?? DateTime.MinValue) + (schedule.DEnd3?.TimeOfDay ?? TimeSpan.Zero)
+                            ),
+                            new Tuple<DateTime, DateTime>(
+                                (schedule.Date?.Date ?? DateTime.MinValue) + (schedule.Start4?.TimeOfDay ?? TimeSpan.Zero),
+                                (schedule.Date?.Date ?? DateTime.MinValue) + (schedule.DEnd4?.TimeOfDay ?? TimeSpan.Zero)
+                            ),
+                            new Tuple<DateTime, DateTime>(
+                                (schedule.Date?.Date ?? DateTime.MinValue) + (schedule.Start5?.TimeOfDay ?? TimeSpan.Zero),
+                                (schedule.Date?.Date ?? DateTime.MinValue) + (schedule.DEnd5?.TimeOfDay ?? TimeSpan.Zero)
+                            ),
+                            new Tuple<DateTime, DateTime>(
+                                (schedule.Date?.Date ?? DateTime.MinValue) + (schedule.Start6?.TimeOfDay ?? TimeSpan.Zero),
+                                (schedule.Date?.Date ?? DateTime.MinValue) + (schedule.DEnd6?.TimeOfDay ?? TimeSpan.Zero)
+                            )
+                        };
+                        var filteredtimeSlots = timeSlots.Where(t => t.Item1 < t.Item2).ToArray();
+
+                        foreach (var slot in filteredtimeSlots)
+                        {
+
+                            if (startTime >= slot.Item1 && endTime <= slot.Item2)
+                            {
+                                entries.Add(new Entry
+                                {
+                                    StartDateTime = startTime,
+                                    EndDateTime = endTime,
+                                    Time = $"{startTime:h:mm tt} - {endTime:h:mm tt}",
+                                    Stylist = schedule.FirstName,
+                                    Client = "",
+                                    Status = "Available",
+                                    Appointment = "Available"
+                                });
+                                entryAdded = true;
+                                break;
+                            }
+                        }
                     }
 
                     if (!entryAdded)
@@ -422,16 +478,22 @@ namespace SalonIrisTicketsSchedule
                             StartDateTime = startTime,
                             EndDateTime = endTime,
                             Time = $"{startTime:h:mm tt} - {endTime:h:mm tt}",
-                            Stylist = schedules.FirstOrDefault(s => s.EmployeeID == schedule.EmployeeID)?.FirstName,
-                            Client = "",
-                            Status = "Available",
-                            Appointment = "Available"
+                            Stylist = string.Empty,
+                            Client = string.Empty,
+                            Status = string.Empty,
+                            Appointment = string.Empty
                         });
                     }
                 }
             }
 
-            var totalPage = entries.Count / numRows;
+            var totalPage = (int)Math.Ceiling(entries.Count / (double)numRows);
+            if (totalPage == 0)
+            {
+                _currentPage = 0;
+                return;
+            }
+
             DisplayEntries(now, entries, totalPage, _currentPage++, numRows);
             _currentPage = _currentPage % totalPage;
         }
@@ -449,12 +511,15 @@ namespace SalonIrisTicketsSchedule
         private void DisplayEntries(DateTime now, List<Entry> entries, int totalPage, int pageNum, int perPage)
         {
             var pageItems = entries.Skip(pageNum * perPage).Take(perPage).OrderBy(i => i.StartDateTime).ToArray();
+            if (pageItems.Length <= 0)
+
+                return;
 
             var showTime = $"{pageItems?.FirstOrDefault().StartDateTime:h:mm tt} to {pageItems.LastOrDefault()?.EndDateTime:h:mm tt}";
             var closingTime = GetClosingTime(now.Date);
 
             SafeInvoke(_form2, () => _form2.showtext = $"SHOWING TIME: {showTime}    TODAY CLOSING TIME: {closingTime}".ToUpper());
-            SafeInvoke(_form2, () => _form2.pagetext = "Page " + (pageNum+1) + " of " + totalPage);
+            SafeInvoke(_form2, () => _form2.pagetext = "Page " + (pageNum + 1) + " of " + totalPage);
 
             var form2Type = _form2.GetType();
 
