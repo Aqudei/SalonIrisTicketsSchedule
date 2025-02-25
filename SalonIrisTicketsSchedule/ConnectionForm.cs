@@ -370,15 +370,12 @@ namespace SalonIrisTicketsSchedule
                 {
                     var startTime = start.AddMinutes(i * minutesIncrement);
                     var endTime = start.AddMinutes((i + 1) * minutesIncrement);
+
                     var entryAdded = false;
 
-                    foreach (var ticket in tickets.OrderByDescending(t=>t.PK))
+                    var employeeTickets = tickets.Where(t => t.EmployeeId == schedule.EmployeeID).OrderByDescending(t => t.PK).ToArray();
+                    foreach (var ticket in employeeTickets)
                     {
-                        if (ticket.EmployeeId != schedule.EmployeeID)
-                        {
-                            continue;
-                        }
-
                         if (!(startTime >= ticket.StartDateTime) || !(endTime <= ticket.EndDateTime))
                         {
                             continue;
@@ -423,7 +420,7 @@ namespace SalonIrisTicketsSchedule
 
                     if (!entryAdded)
                     {
-                        
+
                         var timeSlots = new List<Tuple<DateTime, DateTime>>
 {
                             new Tuple<DateTime, DateTime>(
