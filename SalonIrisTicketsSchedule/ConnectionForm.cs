@@ -225,16 +225,24 @@ namespace SalonIrisTicketsSchedule
 
         private string GetClosingTime(DateTime today)
         {
-            string cmdText = $@"SELECT top 1
-                CASE
-                    WHEN fldEnd >= fldEnd2 AND fldEnd >= fldEnd3 AND fldEnd >= fldEnd4 AND fldEnd >= fldEnd5 AND fldEnd >= fldEnd6 THEN fldEnd
-                    WHEN fldEnd2 >= fldEnd AND fldEnd2 >= fldEnd3 AND fldEnd2 >= fldEnd4 AND fldEnd2 >= fldEnd5 AND fldEnd2 >= fldEnd6 THEN fldEnd2
-                    WHEN fldEnd3 >= fldEnd AND fldEnd3 >= fldEnd2 AND fldEnd3 >= fldEnd4 AND fldEnd3 >= fldEnd5 AND fldEnd3 >= fldEnd6 THEN fldEnd3
-                    WHEN fldEnd4 >= fldEnd AND fldEnd4 >= fldEnd2 AND fldEnd4 >= fldEnd4 AND fldEnd4 >= fldEnd5 AND fldEnd4 >= fldEnd6 THEN fldEnd4
-                    WHEN fldEnd5 >= fldEnd AND fldEnd5 >= fldEnd2 AND fldEnd5 >= fldEnd4 AND fldEnd5 >= fldEnd5 AND fldEnd5 >= fldEnd6 THEN fldEnd5
-                    WHEN fldEnd6 >= fldEnd AND fldEnd6 >= fldEnd2 AND fldEnd6 >= fldEnd4 AND fldEnd6 >= fldEnd5 AND fldEnd6 >= fldEnd6 THEN fldEnd6
-                    ELSE fldEnd
-                END AS MostRecentDate from tblScheduling where CAST(fldDate AS DATE) = CAST(@today AS DATE) order by MostRecentDate desc";
+            //string cmdText = $@"SELECT top 1
+            //    CASE
+            //        WHEN fldEnd >= fldEnd2 AND fldEnd >= fldEnd3 AND fldEnd >= fldEnd4 AND fldEnd >= fldEnd5 AND fldEnd >= fldEnd6 THEN fldEnd
+            //        WHEN fldEnd2 >= fldEnd AND fldEnd2 >= fldEnd3 AND fldEnd2 >= fldEnd4 AND fldEnd2 >= fldEnd5 AND fldEnd2 >= fldEnd6 THEN fldEnd2
+            //        WHEN fldEnd3 >= fldEnd AND fldEnd3 >= fldEnd2 AND fldEnd3 >= fldEnd4 AND fldEnd3 >= fldEnd5 AND fldEnd3 >= fldEnd6 THEN fldEnd3
+            //        WHEN fldEnd4 >= fldEnd AND fldEnd4 >= fldEnd2 AND fldEnd4 >= fldEnd4 AND fldEnd4 >= fldEnd5 AND fldEnd4 >= fldEnd6 THEN fldEnd4
+            //        WHEN fldEnd5 >= fldEnd AND fldEnd5 >= fldEnd2 AND fldEnd5 >= fldEnd4 AND fldEnd5 >= fldEnd5 AND fldEnd5 >= fldEnd6 THEN fldEnd5
+            //        WHEN fldEnd6 >= fldEnd AND fldEnd6 >= fldEnd2 AND fldEnd6 >= fldEnd4 AND fldEnd6 >= fldEnd5 AND fldEnd6 >= fldEnd6 THEN fldEnd6
+            //        ELSE fldEnd
+            //    END AS MostRecentDate from tblScheduling where CAST(fldDate AS DATE) = CAST(@today AS DATE) order by MostRecentDate desc";
+
+            var cmdText =
+                @"SELECT TOP 1 
+                    GREATEST(fldEnd, fldEnd2, fldEnd3, fldEnd4, fldEnd5, fldEnd6) AS MostRecentDate
+                    FROM tblScheduling
+                    WHERE CAST(fldDate AS DATE) = CAST(@today AS DATE)
+                    ORDER BY MostRecentDate DESC;";
+
             using (var connection = GetOpenConnection())
             {
                 using (var cmd = new SqlCommand(cmdText, connection))
@@ -351,8 +359,8 @@ namespace SalonIrisTicketsSchedule
 
         private void RefreshScreen()
         {
-            var now = DateTime.Now;
-            // var now = DateTime.Parse("2025-02-19 14:00");
+            // var now = DateTime.Now;
+            var now = DateTime.Parse("2025-02-19 14:00");
 
             var tickets = GetTickets(now.Date);
             var schedules = GetSchedules(now.Date);
@@ -389,7 +397,7 @@ namespace SalonIrisTicketsSchedule
                         {
                             StartDateTime = startTime,
                             EndDateTime = endTime,
-                            Time = $"{startTime:h:mm tt} - {endTime:h:mm tt}",
+                            Time = $"{startTime:h:mm tt} - {endTime:h:mm tt}".ToUpper(),
                             Stylist = schedule.FirstName,
                             Client = client,
                             Status = ticket.TicketStatus == "Open" ? "Taken" : "Open",
@@ -411,7 +419,7 @@ namespace SalonIrisTicketsSchedule
                                 {
                                     StartDateTime = startTime,
                                     EndDateTime = endTime,
-                                    Time = $"{startTime:h:mm tt} - {endTime:h:mm tt}",
+                                    Time = $"{startTime:h:mm tt} - {endTime:h:mm tt}".ToUpper(),
                                     Stylist = schedule.FirstName,
                                     Client = "",
                                     Status = "Available",
@@ -429,8 +437,8 @@ namespace SalonIrisTicketsSchedule
                         {
                             StartDateTime = startTime,
                             EndDateTime = endTime,
-                            Time = $"{startTime:h:mm tt} - {endTime:h:mm tt}",
-                            Stylist = schedule.FirstName,
+                            Time = $"{startTime:h:mm tt} - {endTime:h:mm tt}".ToUpper(),
+                            Stylist = "",
                             Client = string.Empty,
                             Status = string.Empty,
                             Appointment = string.Empty
@@ -470,14 +478,14 @@ namespace SalonIrisTicketsSchedule
         {
             var date = schedule.Date?.Date ?? DateTime.MinValue;
             var timeSlots = new List<Tuple<DateTime, DateTime>>
-    {
-        Tuple.Create(date + (schedule.Start?.TimeOfDay ?? TimeSpan.Zero), date + (schedule.DEnd?.TimeOfDay ?? TimeSpan.Zero)),
-        Tuple.Create(date + (schedule.Start2?.TimeOfDay ?? TimeSpan.Zero), date + (schedule.DEnd2?.TimeOfDay ?? TimeSpan.Zero)),
-        Tuple.Create(date + (schedule.Start3?.TimeOfDay ?? TimeSpan.Zero), date + (schedule.DEnd3?.TimeOfDay ?? TimeSpan.Zero)),
-        Tuple.Create(date + (schedule.Start4?.TimeOfDay ?? TimeSpan.Zero), date + (schedule.DEnd4?.TimeOfDay ?? TimeSpan.Zero)),
-        Tuple.Create(date + (schedule.Start5?.TimeOfDay ?? TimeSpan.Zero), date + (schedule.DEnd5?.TimeOfDay ?? TimeSpan.Zero)),
-        Tuple.Create(date + (schedule.Start6?.TimeOfDay ?? TimeSpan.Zero), date + (schedule.DEnd6?.TimeOfDay ?? TimeSpan.Zero))
-    };
+            {
+                Tuple.Create(date + (schedule.Start?.TimeOfDay ?? TimeSpan.Zero), date + (schedule.DEnd?.TimeOfDay ?? TimeSpan.Zero)),
+                Tuple.Create(date + (schedule.Start2?.TimeOfDay ?? TimeSpan.Zero), date + (schedule.DEnd2?.TimeOfDay ?? TimeSpan.Zero)),
+                Tuple.Create(date + (schedule.Start3?.TimeOfDay ?? TimeSpan.Zero), date + (schedule.DEnd3?.TimeOfDay ?? TimeSpan.Zero)),
+                Tuple.Create(date + (schedule.Start4?.TimeOfDay ?? TimeSpan.Zero), date + (schedule.DEnd4?.TimeOfDay ?? TimeSpan.Zero)),
+                Tuple.Create(date + (schedule.Start5?.TimeOfDay ?? TimeSpan.Zero), date + (schedule.DEnd5?.TimeOfDay ?? TimeSpan.Zero)),
+                Tuple.Create(date + (schedule.Start6?.TimeOfDay ?? TimeSpan.Zero), date + (schedule.DEnd6?.TimeOfDay ?? TimeSpan.Zero))
+            };
 
             return timeSlots.Where(t => t.Item1 < t.Item2).ToList();
         }
@@ -498,6 +506,9 @@ namespace SalonIrisTicketsSchedule
             var pageItems = entries.Skip(pageNum * perPage).Take(perPage).OrderBy(i => i.StartDateTime).ToArray();
             if (pageItems.Length <= 0)
 
+                return;
+
+            if (pageItems.All(p => string.IsNullOrEmpty(p.Appointment)))
                 return;
 
             var showTime = $"{pageItems?.FirstOrDefault().StartDateTime:h:mm tt} to {pageItems.LastOrDefault()?.EndDateTime:h:mm tt}";
