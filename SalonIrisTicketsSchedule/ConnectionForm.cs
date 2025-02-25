@@ -264,7 +264,7 @@ namespace SalonIrisTicketsSchedule
             using (var connection = GetOpenConnection())
             {
                 string query = @"
-                        SELECT DISTINCT(t.fldPK),
+                        SELECT DISTINCT(t.fldPK) AS PK,
                         t.fldStartDateTime,  
                         t.fldEndDateTime,  
                         t.fldEmployeeID,
@@ -298,6 +298,9 @@ namespace SalonIrisTicketsSchedule
 
                                 result.Add(new Models.Ticket
                                 {
+                                    PK = reader.IsDBNull(reader.GetOrdinal("PK"))
+                                        ? (int?)null
+                                        : reader.GetInt32(reader.GetOrdinal("PK")),
                                     CheckedIn = reader.IsDBNull(reader.GetOrdinal("fldCheckedIn"))
                                         ? (bool?)null
                                         : reader.GetBoolean(reader.GetOrdinal("fldCheckedIn")),
@@ -355,7 +358,7 @@ namespace SalonIrisTicketsSchedule
             var tickets = GetTickets(now.Date);
             var schedules = GetSchedules(now.Date);
 
-            var minutesIncrement = (int)(60 / Properties.Settings.Default.AppointmentNum);
+            var minutesIncrement = 60 / Properties.Settings.Default.AppointmentNum;
             var excess = now.Minute % minutesIncrement;
             var start = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute - excess, 0);
 
@@ -369,7 +372,7 @@ namespace SalonIrisTicketsSchedule
                     var endTime = start.AddMinutes((i + 1) * minutesIncrement);
                     var entryAdded = false;
 
-                    foreach (var ticket in tickets)
+                    foreach (var ticket in tickets.OrderByDescending(t=>t.PK))
                     {
                         if (ticket.EmployeeId != schedule.EmployeeID)
                         {
@@ -478,7 +481,7 @@ namespace SalonIrisTicketsSchedule
                             StartDateTime = startTime,
                             EndDateTime = endTime,
                             Time = $"{startTime:h:mm tt} - {endTime:h:mm tt}",
-                            Stylist = string.Empty,
+                            Stylist = schedule.FirstName,
                             Client = string.Empty,
                             Status = string.Empty,
                             Appointment = string.Empty

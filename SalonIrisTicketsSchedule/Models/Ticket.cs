@@ -16,5 +16,6 @@ namespace SalonIrisTicketsSchedule.Models
         public string ClientName { get; set; }
         public string Description { get; set; }
         public DateTime? EndDateTime { get; internal set; }
+        public int? PK { get; internal set; }
     }
 }
