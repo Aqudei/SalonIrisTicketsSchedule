@@ -352,7 +352,6 @@ namespace SalonIrisTicketsSchedule
         private void RefreshScreen()
         {
             var now = DateTime.Now;
-
             // var now = DateTime.Parse("2025-02-19 14:00");
 
             var tickets = GetTickets(now.Date);
@@ -364,45 +363,29 @@ namespace SalonIrisTicketsSchedule
 
             var numRows = Properties.Settings.Default.AppointmentNum == 4 ? 8 : 6;
             var entries = new List<Entry>();
-            foreach (var schedule in schedules.OrderBy(x => x.EmployeeID))
+
+            foreach (var schedule in schedules.OrderBy(s => s.EmployeeID))
             {
                 for (int i = 0; i < numRows; i++)
                 {
                     var startTime = start.AddMinutes(i * minutesIncrement);
-                    var endTime = start.AddMinutes((i + 1) * minutesIncrement);
-
+                    var endTime = startTime.AddMinutes(minutesIncrement);
                     var entryAdded = false;
 
-                    var employeeTickets = tickets.Where(t => t.EmployeeId == schedule.EmployeeID).OrderByDescending(t => t.PK).ToArray();
+                    var employeeTickets = tickets
+                        .Where(t => t.EmployeeId == schedule.EmployeeID)
+                        .OrderByDescending(t => t.PK)
+                        .ToArray();
+
                     foreach (var ticket in employeeTickets)
                     {
-                        if (!(startTime >= ticket.StartDateTime) || !(endTime <= ticket.EndDateTime))
-                        {
+                        if (startTime < ticket.StartDateTime || endTime > ticket.EndDateTime)
                             continue;
-                        }
 
-                        var appointment = ticket.TicketStatus;
-                        if (ticket.TicketStatus == "Open" && ticket.CheckedIn.HasValue && ticket.CheckedIn.Value)
-                        {
-                            appointment = "Arrived";
-                        }
-                        if (ticket.TicketStatus == "Open" && (!ticket.CheckedIn.HasValue || !ticket.CheckedIn.Value))
-                        {
-                            appointment = "On Schedule";
-                        }
-                        var client = ticket.ClientName;
-                        var isTimeBlock = ticket.Description?.ToLower().Contains("time block");
-                        if (isTimeBlock.HasValue && isTimeBlock.Value)
-                        {
-                            client = "Time Block";
-                        }
+                        var appointment = GetAppointmentStatus(ticket);
+                        var client = ticket.Description?.ToLower().Contains("time block") == true ? "Time Block" : ticket.ClientName;
 
-                        if ((ticket.Completed.HasValue && ticket.Completed.Value) || ticket.TicketStatus == "Closed")
-                        {
-                            appointment = "Done";
-                        }
-
-                        var entry = new Entry
+                        entries.Add(new Entry
                         {
                             StartDateTime = startTime,
                             EndDateTime = endTime,
@@ -411,48 +394,17 @@ namespace SalonIrisTicketsSchedule
                             Client = client,
                             Status = ticket.TicketStatus == "Open" ? "Taken" : "Open",
                             Appointment = appointment
-                        };
+                        });
 
-                        entries.Add(entry);
                         entryAdded = true;
                         break;
                     }
 
                     if (!entryAdded)
                     {
-
-                        var timeSlots = new List<Tuple<DateTime, DateTime>>
-{
-                            new Tuple<DateTime, DateTime>(
-                                (schedule.Date?.Date ?? DateTime.MinValue) + (schedule.Start?.TimeOfDay ?? TimeSpan.Zero),
-                                (schedule.Date?.Date ?? DateTime.MinValue) + (schedule.DEnd?.TimeOfDay ?? TimeSpan.Zero)
-                            ),
-                            new Tuple<DateTime, DateTime>(
-                                (schedule.Date?.Date ?? DateTime.MinValue) + (schedule.Start2?.TimeOfDay ?? TimeSpan.Zero),
-                                (schedule.Date?.Date ?? DateTime.MinValue) + (schedule.DEnd2?.TimeOfDay ?? TimeSpan.Zero)
-                            ),
-                            new Tuple<DateTime, DateTime>(
-                                (schedule.Date?.Date ?? DateTime.MinValue) + (schedule.Start3?.TimeOfDay ?? TimeSpan.Zero),
-                                (schedule.Date?.Date ?? DateTime.MinValue) + (schedule.DEnd3?.TimeOfDay ?? TimeSpan.Zero)
-                            ),
-                            new Tuple<DateTime, DateTime>(
-                                (schedule.Date?.Date ?? DateTime.MinValue) + (schedule.Start4?.TimeOfDay ?? TimeSpan.Zero),
-                                (schedule.Date?.Date ?? DateTime.MinValue) + (schedule.DEnd4?.TimeOfDay ?? TimeSpan.Zero)
-                            ),
-                            new Tuple<DateTime, DateTime>(
-                                (schedule.Date?.Date ?? DateTime.MinValue) + (schedule.Start5?.TimeOfDay ?? TimeSpan.Zero),
-                                (schedule.Date?.Date ?? DateTime.MinValue) + (schedule.DEnd5?.TimeOfDay ?? TimeSpan.Zero)
-                            ),
-                            new Tuple<DateTime, DateTime>(
-                                (schedule.Date?.Date ?? DateTime.MinValue) + (schedule.Start6?.TimeOfDay ?? TimeSpan.Zero),
-                                (schedule.Date?.Date ?? DateTime.MinValue) + (schedule.DEnd6?.TimeOfDay ?? TimeSpan.Zero)
-                            )
-                        };
-                        var filteredtimeSlots = timeSlots.Where(t => t.Item1 < t.Item2).ToArray();
-
-                        foreach (var slot in filteredtimeSlots)
+                        var timeSlots = GetValidTimeSlots(schedule);
+                        foreach (var slot in timeSlots)
                         {
-
                             if (startTime >= slot.Item1 && endTime <= slot.Item2)
                             {
                                 entries.Add(new Entry
@@ -495,8 +447,41 @@ namespace SalonIrisTicketsSchedule
             }
 
             DisplayEntries(now, entries, totalPage, _currentPage++, numRows);
-            _currentPage = _currentPage % totalPage;
+            _currentPage %= totalPage;
         }
+
+        // Helper method to determine appointment status
+        private string GetAppointmentStatus(Models.Ticket ticket)
+        {
+            if (ticket.TicketStatus == "Open")
+            {
+                if (ticket.CheckedIn == true) return "Arrived";
+                return "On Schedule";
+            }
+            if (ticket.Completed == true || ticket.TicketStatus == "Closed")
+            {
+                return "Done";
+            }
+            return ticket.TicketStatus;
+        }
+
+        // Helper method to retrieve valid time slots
+        private List<Tuple<DateTime, DateTime>> GetValidTimeSlots(Schedule schedule)
+        {
+            var date = schedule.Date?.Date ?? DateTime.MinValue;
+            var timeSlots = new List<Tuple<DateTime, DateTime>>
+    {
+        Tuple.Create(date + (schedule.Start?.TimeOfDay ?? TimeSpan.Zero), date + (schedule.DEnd?.TimeOfDay ?? TimeSpan.Zero)),
+        Tuple.Create(date + (schedule.Start2?.TimeOfDay ?? TimeSpan.Zero), date + (schedule.DEnd2?.TimeOfDay ?? TimeSpan.Zero)),
+        Tuple.Create(date + (schedule.Start3?.TimeOfDay ?? TimeSpan.Zero), date + (schedule.DEnd3?.TimeOfDay ?? TimeSpan.Zero)),
+        Tuple.Create(date + (schedule.Start4?.TimeOfDay ?? TimeSpan.Zero), date + (schedule.DEnd4?.TimeOfDay ?? TimeSpan.Zero)),
+        Tuple.Create(date + (schedule.Start5?.TimeOfDay ?? TimeSpan.Zero), date + (schedule.DEnd5?.TimeOfDay ?? TimeSpan.Zero)),
+        Tuple.Create(date + (schedule.Start6?.TimeOfDay ?? TimeSpan.Zero), date + (schedule.DEnd6?.TimeOfDay ?? TimeSpan.Zero))
+    };
+
+            return timeSlots.Where(t => t.Item1 < t.Item2).ToList();
+        }
+
         private static void SafeInvoke(Control control, Action action)
         {
             if (control.InvokeRequired)
