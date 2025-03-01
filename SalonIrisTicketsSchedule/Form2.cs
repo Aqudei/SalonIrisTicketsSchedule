@@ -399,6 +399,14 @@ namespace SalonIrisTicketsSchedule
                         this.row1appt.BackColor = ColorGreen;
                         this.client1.BackColor = ColorGreen;
                     }
+                    else if (this.row1status.Text == "Taken")
+                    {
+                        this.row1status.BackColor = ColorRed;
+                        this.row1time.BackColor = ColorRed;
+                        this.row1employee.BackColor = ColorRed;
+                        this.row1appt.BackColor = ColorRed;
+                        this.client1.BackColor = ColorRed;
+                    }
                     else
                     {
                         this.row1status.BackColor = FirstColor;
@@ -428,6 +436,7 @@ namespace SalonIrisTicketsSchedule
                     this.row2appt.BackColor = ColorRed;
                     this.client2.BackColor = ColorRed;
                 }
+
                 else
                 {
                     if (this.row2status.Text == "Available")
@@ -437,6 +446,14 @@ namespace SalonIrisTicketsSchedule
                         this.row2employee.BackColor = ColorGreen;
                         this.row2appt.BackColor = ColorGreen;
                         this.client2.BackColor = ColorGreen;
+                    }
+                    else if (this.row2status.Text == "Taken")
+                    {
+                        this.row2status.BackColor = ColorRed;
+                        this.row2time.BackColor = ColorRed;
+                        this.row2employee.BackColor = ColorRed;
+                        this.row2appt.BackColor = ColorRed;
+                        this.client2.BackColor = ColorRed;
                     }
                     else
                     {
@@ -477,6 +494,14 @@ namespace SalonIrisTicketsSchedule
                         this.row3appt.BackColor = ColorGreen;
                         this.client3.BackColor = ColorGreen;
                     }
+                    else if (this.row3status.Text == "Taken")
+                    {
+                        this.row3status.BackColor = ColorRed;
+                        this.row3time.BackColor = ColorRed;
+                        this.row3employee.BackColor = ColorRed;
+                        this.row3appt.BackColor = ColorRed;
+                        this.client3.BackColor = ColorRed;
+                    }
                     else
                     {
                         this.row3status.BackColor = FirstColor;
@@ -515,6 +540,14 @@ namespace SalonIrisTicketsSchedule
                         this.row4employee.BackColor = ColorGreen;
                         this.row4appt.BackColor = ColorGreen;
                         this.client4.BackColor = ColorGreen;
+                    }
+                    else if (this.row4status.Text == "Taken")
+                    {
+                        this.row4status.BackColor = ColorRed;
+                        this.row4time.BackColor = ColorRed;
+                        this.row4employee.BackColor = ColorRed;
+                        this.row4appt.BackColor = ColorRed;
+                        this.client4.BackColor = ColorRed;
                     }
                     else
                     {
@@ -555,6 +588,14 @@ namespace SalonIrisTicketsSchedule
                         this.row5appt.BackColor = ColorGreen;
                         this.client5.BackColor = ColorGreen;
                     }
+                    else if (this.row5status.Text == "Taken")
+                    {
+                        this.row5status.BackColor = ColorRed;
+                        this.row5time.BackColor = ColorRed;
+                        this.row5employee.BackColor = ColorRed;
+                        this.row5appt.BackColor = ColorRed;
+                        this.client5.BackColor = ColorRed;
+                    }
                     else
                     {
                         this.row5status.BackColor = FirstColor;
@@ -593,6 +634,14 @@ namespace SalonIrisTicketsSchedule
                         this.row6employee.BackColor = ColorGreen;
                         this.row6appt.BackColor = ColorGreen;
                         this.client6.BackColor = ColorGreen;
+                    }
+                    else if (this.row6status.Text == "Taken")
+                    {
+                        this.row6status.BackColor = ColorRed;
+                        this.row6time.BackColor = ColorRed;
+                        this.row6employee.BackColor = ColorRed;
+                        this.row6appt.BackColor = ColorRed;
+                        this.client6.BackColor = ColorRed;
                     }
                     else
                     {
@@ -635,6 +684,14 @@ namespace SalonIrisTicketsSchedule
                         this.row7appt.BackColor = ColorGreen;
                         this.client7.BackColor = ColorGreen;
                     }
+                    else if (this.row7status.Text == "Taken")
+                    {
+                        this.row7status.BackColor = ColorRed;
+                        this.row7time.BackColor = ColorRed;
+                        this.row7employee.BackColor = ColorRed;
+                        this.row7appt.BackColor = ColorRed;
+                        this.client7.BackColor = ColorRed;
+                    }
                     else
                     {
                         this.row7status.BackColor = FirstColor;
@@ -670,11 +727,19 @@ namespace SalonIrisTicketsSchedule
                 {
                     if (this.row8status.Text == "Available")
                     {
-                        this.row8status.BackColor =  ColorGreen;
+                        this.row8status.BackColor = ColorGreen;
                         this.row8time.BackColor = ColorGreen;
                         this.row8employee.BackColor = ColorGreen;
                         this.row8appt.BackColor = ColorGreen;
                         this.client8.BackColor = ColorGreen;
+                    }
+                    else if (this.row8status.Text == "Taken")
+                    {
+                        this.row8status.BackColor = ColorRed;
+                        this.row8time.BackColor = ColorRed;
+                        this.row8employee.BackColor = ColorRed;
+                        this.row8appt.BackColor = ColorRed;
+                        this.client8.BackColor = ColorRed;
                     }
                     else
                     {
