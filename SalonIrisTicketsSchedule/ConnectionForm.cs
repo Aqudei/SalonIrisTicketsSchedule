@@ -225,19 +225,38 @@ namespace SalonIrisTicketsSchedule
             return new List<Models.Schedule>();
         }
 
+        private DateTime GetOpeningTime(DateTime today)
+        {
+            var cmdText =
+                @"SELECT TOP 1 
+            LEAST(CAST(fldStart AS TIME), CAST(fldStart2 AS TIME), CAST(fldStart3 AS TIME), CAST(fldStart4 AS TIME), CAST(fldStart5 AS TIME), CAST(fldStart6 AS TIME)) AS EarliestTime
+            FROM tblScheduling
+            WHERE CAST(fldDate AS DATE) = CAST(@today AS DATE)
+            ORDER BY EarliestTime ASC;";
+
+            using (var connection = GetOpenConnection())
+            {
+                using (var cmd = new SqlCommand(cmdText, connection))
+                {
+                    cmd.Parameters.AddWithValue("@today", today);
+                    var reader = cmd.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            var ordinal = reader.GetOrdinal("EarliestTime");
+                            var openingDateTime = reader.GetTimeSpan(ordinal);
+                            return today.Date + openingDateTime;
+                        }
+                    }
+
+                    return default;
+                }
+            }
+        }
+
         private DateTime GetClosingTime(DateTime today)
         {
-            //string cmdText = $@"SELECT top 1
-            //    CASE
-            //        WHEN fldEnd >= fldEnd2 AND fldEnd >= fldEnd3 AND fldEnd >= fldEnd4 AND fldEnd >= fldEnd5 AND fldEnd >= fldEnd6 THEN fldEnd
-            //        WHEN fldEnd2 >= fldEnd AND fldEnd2 >= fldEnd3 AND fldEnd2 >= fldEnd4 AND fldEnd2 >= fldEnd5 AND fldEnd2 >= fldEnd6 THEN fldEnd2
-            //        WHEN fldEnd3 >= fldEnd AND fldEnd3 >= fldEnd2 AND fldEnd3 >= fldEnd4 AND fldEnd3 >= fldEnd5 AND fldEnd3 >= fldEnd6 THEN fldEnd3
-            //        WHEN fldEnd4 >= fldEnd AND fldEnd4 >= fldEnd2 AND fldEnd4 >= fldEnd4 AND fldEnd4 >= fldEnd5 AND fldEnd4 >= fldEnd6 THEN fldEnd4
-            //        WHEN fldEnd5 >= fldEnd AND fldEnd5 >= fldEnd2 AND fldEnd5 >= fldEnd4 AND fldEnd5 >= fldEnd5 AND fldEnd5 >= fldEnd6 THEN fldEnd5
-            //        WHEN fldEnd6 >= fldEnd AND fldEnd6 >= fldEnd2 AND fldEnd6 >= fldEnd4 AND fldEnd6 >= fldEnd5 AND fldEnd6 >= fldEnd6 THEN fldEnd6
-            //        ELSE fldEnd
-            //    END AS MostRecentDate from tblScheduling where CAST(fldDate AS DATE) = CAST(@today AS DATE) order by MostRecentDate desc";
-
             var cmdText =
                 @"SELECT TOP 1 
                     GREATEST(CAST(fldEnd AS TIME), CAST(fldEnd2 AS TIME), CAST(fldEnd3 AS TIME), CAST(fldEnd4 AS TIME), CAST(fldEnd5 AS TIME), CAST(fldEnd6 AS TIME)) AS MostRecentDate
@@ -359,8 +378,13 @@ namespace SalonIrisTicketsSchedule
 
         private void RefreshScreen()
         {
-            var now = DateTime.Now;
+
+#if DEBUG
             // var now = DateTime.Parse("2025-03-01 12:00");
+
+#else
+#endif
+            var now = DateTime.Now;
 
             var tickets = GetTickets(now.Date);
             var schedules = GetSchedules(now.Date);
@@ -405,7 +429,8 @@ namespace SalonIrisTicketsSchedule
                             Time = $"{startTime:h:mm tt} - {endTime:h:mm tt}".ToUpper(),
                             Stylist = schedule.FirstName,
                             Client = client,
-                            Status = ticket.TicketStatus == "Open" ? "Taken" : "Open",
+                            // Status = ticket.TicketStatus == "Open" || ticket.TicketStatus == "Pending" ? "Taken" : ticket.TicketStatus,
+                            Status = "Taken",
                             Appointment = appointment
                         });
 
