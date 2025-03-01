@@ -19,7 +19,7 @@ namespace SalonIrisTicketsSchedule
         Form2 frm2 = new Form2();
 
 
-        private static string ConfigPath = Application.StartupPath + "\\Config\\SalonIrisScheduler.txt";
+        private static string ConfigPath = $"{Application.StartupPath}\\Config\\SalonIrisScheduler.txt";
 
         private static string Company;
         private static string Server;

@@ -55,9 +55,10 @@ namespace SalonIrisTicketsSchedule
             // SaveAndConnectButton
             // 
             this.SaveAndConnectButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SaveAndConnectButton.Location = new System.Drawing.Point(23, 441);
+            this.SaveAndConnectButton.Location = new System.Drawing.Point(34, 678);
+            this.SaveAndConnectButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.SaveAndConnectButton.Name = "SaveAndConnectButton";
-            this.SaveAndConnectButton.Size = new System.Drawing.Size(360, 51);
+            this.SaveAndConnectButton.Size = new System.Drawing.Size(540, 78);
             this.SaveAndConnectButton.TabIndex = 6;
             this.SaveAndConnectButton.Text = "Save and Connect to Database";
             this.SaveAndConnectButton.UseVisualStyleBackColor = true;
@@ -66,18 +67,20 @@ namespace SalonIrisTicketsSchedule
             // ServerNameTextBox
             // 
             this.ServerNameTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ServerNameTextBox.Location = new System.Drawing.Point(140, 209);
+            this.ServerNameTextBox.Location = new System.Drawing.Point(210, 322);
+            this.ServerNameTextBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.ServerNameTextBox.Name = "ServerNameTextBox";
-            this.ServerNameTextBox.Size = new System.Drawing.Size(233, 23);
+            this.ServerNameTextBox.Size = new System.Drawing.Size(348, 30);
             this.ServerNameTextBox.TabIndex = 2;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(39, 209);
+            this.label1.Location = new System.Drawing.Point(58, 322);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(95, 17);
+            this.label1.Size = new System.Drawing.Size(133, 25);
             this.label1.TabIndex = 2;
             this.label1.Text = "Server Name:";
             // 
@@ -85,35 +88,39 @@ namespace SalonIrisTicketsSchedule
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(20, 247);
+            this.label2.Location = new System.Drawing.Point(30, 380);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(114, 17);
+            this.label2.Size = new System.Drawing.Size(159, 25);
             this.label2.TabIndex = 3;
             this.label2.Text = "Database Name:";
             // 
             // DatabaseTextBox
             // 
             this.DatabaseTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DatabaseTextBox.Location = new System.Drawing.Point(140, 247);
+            this.DatabaseTextBox.Location = new System.Drawing.Point(210, 380);
+            this.DatabaseTextBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.DatabaseTextBox.Name = "DatabaseTextBox";
-            this.DatabaseTextBox.Size = new System.Drawing.Size(233, 23);
+            this.DatabaseTextBox.Size = new System.Drawing.Size(348, 30);
             this.DatabaseTextBox.TabIndex = 3;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(40, 9);
+            this.label3.Location = new System.Drawing.Point(60, 14);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(333, 13);
+            this.label3.Size = new System.Drawing.Size(502, 20);
             this.label3.TabIndex = 5;
             this.label3.Text = "You can find this information in Salon Iris -> File -> Database Controls.";
             // 
             // pictureBox1
             // 
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(38, 39);
+            this.pictureBox1.Location = new System.Drawing.Point(57, 60);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(331, 79);
+            this.pictureBox1.Size = new System.Drawing.Size(496, 122);
             this.pictureBox1.TabIndex = 6;
             this.pictureBox1.TabStop = false;
             // 
@@ -121,32 +128,35 @@ namespace SalonIrisTicketsSchedule
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(22, 176);
+            this.label4.Location = new System.Drawing.Point(33, 271);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(112, 17);
+            this.label4.Size = new System.Drawing.Size(160, 25);
             this.label4.TabIndex = 7;
             this.label4.Text = "Company Name:";
             // 
             // CompanyTextBox
             // 
             this.CompanyTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CompanyTextBox.Location = new System.Drawing.Point(140, 173);
+            this.CompanyTextBox.Location = new System.Drawing.Point(210, 266);
+            this.CompanyTextBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.CompanyTextBox.Name = "CompanyTextBox";
-            this.CompanyTextBox.Size = new System.Drawing.Size(233, 23);
+            this.CompanyTextBox.Size = new System.Drawing.Size(348, 30);
             this.CompanyTextBox.TabIndex = 1;
             // 
             // CycleTimer
             // 
-            this.CycleTimer.Interval = 12000;
+            this.CycleTimer.Interval = 10000;
             this.CycleTimer.Tick += new System.EventHandler(this.CycleTimer_Tick);
             // 
             // label5
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(46, 287);
+            this.label5.Location = new System.Drawing.Point(69, 442);
+            this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(88, 17);
+            this.label5.Size = new System.Drawing.Size(122, 25);
             this.label5.TabIndex = 10;
             this.label5.Text = "Server User:";
             // 
@@ -154,37 +164,41 @@ namespace SalonIrisTicketsSchedule
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(15, 324);
+            this.label6.Location = new System.Drawing.Point(22, 498);
+            this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(119, 17);
+            this.label6.Size = new System.Drawing.Size(167, 25);
             this.label6.TabIndex = 11;
             this.label6.Text = "Server Password:";
             // 
             // DBUserTextBox
             // 
             this.DBUserTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DBUserTextBox.Location = new System.Drawing.Point(140, 285);
+            this.DBUserTextBox.Location = new System.Drawing.Point(210, 438);
+            this.DBUserTextBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.DBUserTextBox.Name = "DBUserTextBox";
-            this.DBUserTextBox.Size = new System.Drawing.Size(233, 23);
+            this.DBUserTextBox.Size = new System.Drawing.Size(348, 30);
             this.DBUserTextBox.TabIndex = 4;
             this.DBUserTextBox.Text = "PC4";
             // 
             // DBPasswordTextBox
             // 
             this.DBPasswordTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DBPasswordTextBox.Location = new System.Drawing.Point(140, 320);
+            this.DBPasswordTextBox.Location = new System.Drawing.Point(210, 492);
+            this.DBPasswordTextBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.DBPasswordTextBox.Name = "DBPasswordTextBox";
             this.DBPasswordTextBox.PasswordChar = '-';
-            this.DBPasswordTextBox.Size = new System.Drawing.Size(233, 23);
+            this.DBPasswordTextBox.Size = new System.Drawing.Size(348, 30);
             this.DBPasswordTextBox.TabIndex = 5;
             this.DBPasswordTextBox.Text = "test";
             // 
             // SSPICheckBox
             // 
             this.SSPICheckBox.AutoSize = true;
-            this.SSPICheckBox.Location = new System.Drawing.Point(170, 357);
+            this.SSPICheckBox.Location = new System.Drawing.Point(255, 549);
+            this.SSPICheckBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.SSPICheckBox.Name = "SSPICheckBox";
-            this.SSPICheckBox.Size = new System.Drawing.Size(213, 17);
+            this.SSPICheckBox.Size = new System.Drawing.Size(312, 24);
             this.SSPICheckBox.TabIndex = 12;
             this.SSPICheckBox.Text = "Windows Based(No Password Needed)";
             this.SSPICheckBox.UseVisualStyleBackColor = true;
@@ -197,26 +211,28 @@ namespace SalonIrisTicketsSchedule
             this.AppointmentPerHourComboBox.Items.AddRange(new object[] {
             "3",
             "4"});
-            this.AppointmentPerHourComboBox.Location = new System.Drawing.Point(140, 391);
+            this.AppointmentPerHourComboBox.Location = new System.Drawing.Point(210, 602);
+            this.AppointmentPerHourComboBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.AppointmentPerHourComboBox.Name = "AppointmentPerHourComboBox";
-            this.AppointmentPerHourComboBox.Size = new System.Drawing.Size(233, 24);
+            this.AppointmentPerHourComboBox.Size = new System.Drawing.Size(348, 33);
             this.AppointmentPerHourComboBox.TabIndex = 13;
             // 
             // label8
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(15, 391);
+            this.label8.Location = new System.Drawing.Point(22, 602);
+            this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(116, 17);
+            this.label8.Size = new System.Drawing.Size(160, 25);
             this.label8.TabIndex = 15;
             this.label8.Text = "#Appts per Hour:";
             // 
             // ConnectionForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(406, 504);
+            this.ClientSize = new System.Drawing.Size(609, 775);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.AppointmentPerHourComboBox);
             this.Controls.Add(this.SSPICheckBox);
@@ -233,6 +249,7 @@ namespace SalonIrisTicketsSchedule
             this.Controls.Add(this.label1);
             this.Controls.Add(this.ServerNameTextBox);
             this.Controls.Add(this.SaveAndConnectButton);
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "ConnectionForm";
             this.Text = "Salon Iris Tickets Configuration";
             this.Load += new System.EventHandler(this.ConnectionForm_Load);
