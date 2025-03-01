@@ -146,7 +146,7 @@ namespace SalonIrisTicketsSchedule
             // 
             // CycleTimer
             // 
-            this.CycleTimer.Interval = 10000;
+            this.CycleTimer.Interval = 12000;
             this.CycleTimer.Tick += new System.EventHandler(this.CycleTimer_Tick);
             // 
             // label5
