@@ -378,12 +378,8 @@ namespace SalonIrisTicketsSchedule
 
         private void RefreshScreen()
         {
+            // var now = DateTime.Parse("2025-03-01 08:00");
 
-#if DEBUG
-            // var now = DateTime.Parse("2025-03-01 12:00");
-
-#else
-#endif
             var now = DateTime.Now;
 
             var tickets = GetTickets(now.Date);
@@ -524,11 +520,16 @@ namespace SalonIrisTicketsSchedule
         {
             var pageItems = entries.Skip(pageNum * perPage).Take(perPage).OrderBy(i => i.StartDateTime).ToArray();
             if (pageItems.Length <= 0)
-
+            {
                 return;
+            }
+
+            var closingTime = GetClosingTime(now.Date);
+            var openingTime = GetOpeningTime(now.Date);
+
+
 
             var showTime = $"{pageItems?.FirstOrDefault().StartDateTime:h:mm tt} to {pageItems.LastOrDefault()?.EndDateTime:h:mm tt}";
-            var closingTime = GetClosingTime(now.Date);
 
             SafeInvoke(_form2, () => _form2.showtext = $"SHOWING TIME: {showTime}    TODAY CLOSING TIME: {closingTime:h:mm tt}".ToUpper());
             SafeInvoke(_form2, () => _form2.pagetext = "Page " + (pageNum + 1) + " of " + totalPage);
