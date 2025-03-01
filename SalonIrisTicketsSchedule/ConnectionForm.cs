@@ -359,8 +359,8 @@ namespace SalonIrisTicketsSchedule
 
         private void RefreshScreen()
         {
-            // var now = DateTime.Now;
-            var now = DateTime.Parse("2025-03-01 11:30");
+            var now = DateTime.Now;
+            // var now = DateTime.Parse("2025-03-01 11:30");
 
             var tickets = GetTickets(now.Date);
             var schedules = GetSchedules(now.Date);
