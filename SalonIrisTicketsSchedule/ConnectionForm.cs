@@ -360,7 +360,7 @@ namespace SalonIrisTicketsSchedule
         private void RefreshScreen()
         {
             var now = DateTime.Now;
-            // var now = DateTime.Parse("2025-03-01 11:30");
+            //var now = DateTime.Parse("2025-03-01 08:00");
 
             var tickets = GetTickets(now.Date);
             var schedules = GetSchedules(now.Date);
@@ -419,32 +419,16 @@ namespace SalonIrisTicketsSchedule
                         {
                             if (startTime >= slot.Item1 && endTime <= slot.Item2)
                             {
-                                if (earliest != null && earliest.StartDateTime <= startTime)
+                                entries.Add(new Entry
                                 {
-                                    entries.Add(new Entry
-                                    {
-                                        StartDateTime = startTime,
-                                        EndDateTime = endTime,
-                                        Time = $"{startTime:h:mm tt} - {endTime:h:mm tt}".ToUpper(),
-                                        Stylist = schedule.FirstName,
-                                        Client = "",
-                                        Status = "Available",
-                                        Appointment = "Available"
-                                    });
-                                }
-                                else
-                                {
-                                    entries.Add(new Entry
-                                    {
-                                        StartDateTime = startTime,
-                                        EndDateTime = endTime,
-                                        Time = $"{startTime:h:mm tt} - {endTime:h:mm tt}".ToUpper(),
-                                        Stylist = string.Empty,
-                                        Client = string.Empty,
-                                        Status = string.Empty,
-                                        Appointment = string.Empty
-                                    });
-                                }
+                                    StartDateTime = startTime,
+                                    EndDateTime = endTime,
+                                    Time = $"{startTime:h:mm tt} - {endTime:h:mm tt}".ToUpper(),
+                                    Stylist = schedule.FirstName,
+                                    Client = "",
+                                    Status = "Available",
+                                    Appointment = "Available"
+                                });
 
                                 entryAdded = true;
                                 break;
