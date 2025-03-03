@@ -280,11 +280,31 @@ namespace SalonIrisTicketsSchedule
         {
             try
             {
-                var cmdText =
-                        @"SELECT TOP 1 
-                    GREATEST(CAST(fldEnd AS TIME), CAST(fldEnd2 AS TIME), CAST(fldEnd3 AS TIME), CAST(fldEnd4 AS TIME), CAST(fldEnd5 AS TIME), CAST(fldEnd6 AS TIME)) AS MostRecentDate
-                    FROM tblScheduling
-                    WHERE CAST(fldDate AS DATE) = CAST(@today AS DATE)
+                //var cmdText =
+                //        @"SELECT TOP 1 
+                //    GREATEST(CAST(fldEnd AS TIME), CAST(fldEnd2 AS TIME), CAST(fldEnd3 AS TIME), CAST(fldEnd4 AS TIME), CAST(fldEnd5 AS TIME), CAST(fldEnd6 AS TIME)) AS MostRecentDate
+                //    FROM tblScheduling
+                //    WHERE CAST(fldDate AS DATE) = CAST(@today AS DATE)
+                //    ORDER BY MostRecentDate DESC;";
+
+                var cmdText = @"
+                    SELECT TOP 1 MostRecentDate
+                    FROM (
+                        SELECT MAX(EndTime) AS MostRecentDate
+                        FROM (
+                            SELECT CAST(fldEnd AS TIME) AS EndTime FROM tblScheduling WHERE CAST(fldDate AS DATE) = CAST(@today AS DATE)
+                            UNION ALL
+                            SELECT CAST(fldEnd2 AS TIME) FROM tblScheduling WHERE CAST(fldDate AS DATE) = CAST(@today AS DATE)
+                            UNION ALL
+                            SELECT CAST(fldEnd3 AS TIME) FROM tblScheduling WHERE CAST(fldDate AS DATE) = CAST(@today AS DATE)
+                            UNION ALL
+                            SELECT CAST(fldEnd4 AS TIME) FROM tblScheduling WHERE CAST(fldDate AS DATE) = CAST(@today AS DATE)
+                            UNION ALL
+                            SELECT CAST(fldEnd5 AS TIME) FROM tblScheduling WHERE CAST(fldDate AS DATE) = CAST(@today AS DATE)
+                            UNION ALL
+                            SELECT CAST(fldEnd6 AS TIME) FROM tblScheduling WHERE CAST(fldDate AS DATE) = CAST(@today AS DATE)
+                        ) AS CombinedTimes
+                    ) AS MaxTime
                     ORDER BY MostRecentDate DESC;";
 
                 using (var connection = GetOpenConnection())
