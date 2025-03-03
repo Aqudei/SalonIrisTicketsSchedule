@@ -225,6 +225,7 @@ namespace SalonIrisTicketsSchedule
                     {
                         Debug.WriteLine(ex.Message);
                         logger.Error(ex);
+                        logger.Error(ex.StackTrace);
                     }
 
                 }
@@ -381,6 +382,7 @@ namespace SalonIrisTicketsSchedule
                     {
                         Debug.WriteLine(ex.Message);
                         logger.Error(ex);
+                        logger.Error(ex.StackTrace);
 
                     }
 
