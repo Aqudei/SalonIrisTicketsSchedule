@@ -11,8 +11,8 @@ namespace SalonIrisTicketsSchedule.Models
         public DateTime? StartDateTime { get; set; }
         public int? EmployeeId { get; set; }
         public string TicketStatus { get; set; }
-        public bool? Completed { get; set; }
-        public bool? CheckedIn { get; set; }
+        public bool Completed { get; set; }
+        public bool CheckedIn { get; set; }
         public string ClientName { get; set; }
         public string Description { get; set; }
         public DateTime? EndDateTime { get; internal set; }

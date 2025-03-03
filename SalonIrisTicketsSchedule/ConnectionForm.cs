@@ -340,20 +340,23 @@ namespace SalonIrisTicketsSchedule
                                         ? (int?)null
                                         : reader.GetInt32(reader.GetOrdinal("fldEmployeeID"));
 
+                                var checkIn = reader.IsDBNull(reader.GetOrdinal("fldCheckedIn"))
+                                        ? false
+                                        : reader.GetInt32(reader.GetOrdinal("fldCheckedIn")) == 0 ? false : true;
+                                
+                                var completed = reader.IsDBNull(reader.GetOrdinal("fldCompleted"))
+                                        ? false
+                                        : reader.GetInt32(reader.GetOrdinal("fldCompleted")) == 0 ? false : true;
+
                                 result.Add(new Models.Ticket
                                 {
-                                    CheckedIn = reader.IsDBNull(reader.GetOrdinal("fldCheckedIn"))
-                                        ? (bool?)null
-                                        : reader.GetBoolean(reader.GetOrdinal("fldCheckedIn")),
+                                    CheckedIn = checkIn,
+                                    Completed = completed,
 
                                     ClientName = reader.IsDBNull(reader.GetOrdinal("ClientName"))
                                         ? string.Empty
                                         : reader.GetString(reader.GetOrdinal("ClientName")),
-
-                                    Completed = reader.IsDBNull(reader.GetOrdinal("fldCompleted"))
-                                        ? (bool?)null
-                                        : reader.GetBoolean(reader.GetOrdinal("fldCompleted")),
-
+                                    
                                     Description = reader.IsDBNull(reader.GetOrdinal("Description"))
                                         ? string.Empty
                                         : reader.GetString(reader.GetOrdinal("Description")),
