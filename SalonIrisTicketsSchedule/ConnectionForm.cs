@@ -421,10 +421,6 @@ namespace SalonIrisTicketsSchedule
 
             foreach (var schedule in schedules.OrderBy(s => s.EmployeeID))
             {
-                var earliest = tickets.OrderBy(t => t.StartDateTime)
-                    .Where(t => !t.Description.ToLower().Contains("time block"))
-                    .FirstOrDefault();
-
                 for (int i = 0; i < numRows; i++)
                 {
                     var startTime = start.AddMinutes(i * minutesIncrement);
@@ -435,6 +431,8 @@ namespace SalonIrisTicketsSchedule
                         .Where(t => t.EmployeeId == schedule.EmployeeID)
                         .OrderByDescending(t => t.StartDateTime)
                         .ToArray();
+
+                    logger.Info($"Stylist {schedule.FirstName} has {employeeTickets.Length} tickets today.");
 
                     foreach (var ticket in employeeTickets)
                     {
@@ -545,6 +543,8 @@ namespace SalonIrisTicketsSchedule
 
         private void DisplayEntries(DateTime now, List<Entry> entries, int totalPage, int pageNum, int perPage)
         {
+            logger.Info($"@DisplayEntries(); PageItems count: {entries.Count}");
+
             var pageItems = entries.Skip(pageNum * perPage).Take(perPage).OrderBy(i => i.StartDateTime).ToArray();
             if (pageItems.Length <= 0)
             {
@@ -553,8 +553,6 @@ namespace SalonIrisTicketsSchedule
 
             var closingTime = GetClosingTime(now.Date);
             var openingTime = GetOpeningTime(now.Date);
-
-
 
             var showTime = $"{pageItems?.FirstOrDefault().StartDateTime:h:mm tt} to {pageItems.LastOrDefault()?.EndDateTime:h:mm tt}";
 
