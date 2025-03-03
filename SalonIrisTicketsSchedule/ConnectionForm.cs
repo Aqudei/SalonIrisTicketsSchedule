@@ -235,66 +235,85 @@ namespace SalonIrisTicketsSchedule
             return new List<Models.Schedule>();
         }
 
-        private DateTime GetOpeningTime(DateTime today)
+        private DateTime? GetOpeningTime(DateTime today)
         {
-            var cmdText =
-                @"SELECT TOP 1 
-            LEAST(CAST(fldStart AS TIME), CAST(fldStart2 AS TIME), CAST(fldStart3 AS TIME), CAST(fldStart4 AS TIME), CAST(fldStart5 AS TIME), CAST(fldStart6 AS TIME)) AS EarliestTime
-            FROM tblScheduling
-            WHERE CAST(fldDate AS DATE) = CAST(@today AS DATE)
-            ORDER BY EarliestTime ASC;";
-
-            using (var connection = GetOpenConnection())
+            try
             {
-                using (var cmd = new SqlCommand(cmdText, connection))
-                {
-                    cmd.Parameters.AddWithValue("@today", today);
-                    var reader = cmd.ExecuteReader();
-                    if (reader.HasRows)
-                    {
-                        while (reader.Read())
-                        {
-                            var ordinal = reader.GetOrdinal("EarliestTime");
-                            var openingDateTime = reader.GetTimeSpan(ordinal);
-                            return today.Date + openingDateTime;
-                        }
-                    }
+                var cmdText =
+                        @"SELECT TOP 1 
+                        LEAST(CAST(fldStart AS TIME), CAST(fldStart2 AS TIME), CAST(fldStart3 AS TIME), CAST(fldStart4 AS TIME), CAST(fldStart5 AS TIME), CAST(fldStart6 AS TIME)) AS EarliestTime
+                        FROM tblScheduling
+                        WHERE CAST(fldDate AS DATE) = CAST(@today AS DATE)
+                        ORDER BY EarliestTime ASC;";
 
-                    return default;
+                using (var connection = GetOpenConnection())
+                {
+                    using (var cmd = new SqlCommand(cmdText, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@today", today);
+                        var reader = cmd.ExecuteReader();
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                var ordinal = reader.GetOrdinal("EarliestTime");
+                                var openingDateTime = reader.GetTimeSpan(ordinal);
+                                return today.Date + openingDateTime;
+                            }
+                        }
+
+                        return null;
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                logger.Error("Error @ GetOpeningTime()");
+                logger.Error(ex.Message);
+                logger.Error(ex.StackTrace);
+            }
+
+            return null;
         }
 
-        private DateTime GetClosingTime(DateTime today)
+        private DateTime? GetClosingTime(DateTime today)
         {
-            var cmdText =
-                @"SELECT TOP 1 
+            try
+            {
+                var cmdText =
+                        @"SELECT TOP 1 
                     GREATEST(CAST(fldEnd AS TIME), CAST(fldEnd2 AS TIME), CAST(fldEnd3 AS TIME), CAST(fldEnd4 AS TIME), CAST(fldEnd5 AS TIME), CAST(fldEnd6 AS TIME)) AS MostRecentDate
                     FROM tblScheduling
                     WHERE CAST(fldDate AS DATE) = CAST(@today AS DATE)
                     ORDER BY MostRecentDate DESC;";
 
-            using (var connection = GetOpenConnection())
-            {
-                using (var cmd = new SqlCommand(cmdText, connection))
+                using (var connection = GetOpenConnection())
                 {
-                    cmd.Parameters.AddWithValue("@today", today);
-                    var reader = cmd.ExecuteReader();
-                    if (reader.HasRows)
+                    using (var cmd = new SqlCommand(cmdText, connection))
                     {
-                        while (reader.Read())
+                        cmd.Parameters.AddWithValue("@today", today);
+                        var reader = cmd.ExecuteReader();
+                        if (reader.HasRows)
                         {
-                            var ordinal = reader.GetOrdinal("MostRecentDate");
-                            var closingDateTime = reader.GetTimeSpan(ordinal);
-                            return today.Date + closingDateTime;
-                            // return closingDateTime.ToString("h:mm tt", new System.Globalization.CultureInfo("en-US"));
+                            while (reader.Read())
+                            {
+                                var ordinal = reader.GetOrdinal("MostRecentDate");
+                                var closingDateTime = reader.GetTimeSpan(ordinal);
+                                return today.Date + closingDateTime;
+                                // return closingDateTime.ToString("h:mm tt", new System.Globalization.CultureInfo("en-US"));
+                            }
                         }
-
                     }
-
-                    return default;
                 }
             }
+            catch (Exception ex)
+            {
+                logger.Error("Error @ GetClosingTime()");
+                logger.Error(ex.Message);
+                logger.Error(ex.StackTrace);
+
+            }
+            return null;
         }
 
         private List<Models.Ticket> GetTickets(DateTime date)
@@ -343,7 +362,7 @@ namespace SalonIrisTicketsSchedule
                                 var checkIn = reader.IsDBNull(reader.GetOrdinal("fldCheckedIn"))
                                         ? false
                                         : true;
-                                
+
                                 var completed = reader.IsDBNull(reader.GetOrdinal("fldCompleted"))
                                         ? false
                                         : reader.GetBoolean(reader.GetOrdinal("fldCompleted"));
@@ -356,7 +375,7 @@ namespace SalonIrisTicketsSchedule
                                     ClientName = reader.IsDBNull(reader.GetOrdinal("ClientName"))
                                         ? string.Empty
                                         : reader.GetString(reader.GetOrdinal("ClientName")),
-                                    
+
                                     Description = reader.IsDBNull(reader.GetOrdinal("Description"))
                                         ? string.Empty
                                         : reader.GetString(reader.GetOrdinal("Description")),
@@ -552,11 +571,19 @@ namespace SalonIrisTicketsSchedule
             }
 
             var closingTime = GetClosingTime(now.Date);
-            var openingTime = GetOpeningTime(now.Date);
-
             var showTime = $"{pageItems?.FirstOrDefault().StartDateTime:h:mm tt} to {pageItems.LastOrDefault()?.EndDateTime:h:mm tt}";
 
-            SafeInvoke(_form2, () => _form2.showtext = $"SHOWING TIME: {showTime}    TODAY CLOSING TIME: {closingTime:h:mm tt}".ToUpper());
+            // var openingTime = GetOpeningTime(now.Date);
+            if (closingTime.HasValue)
+            {
+                SafeInvoke(_form2, () => _form2.showtext = $"SHOWING TIME: {showTime}    TODAY CLOSING TIME: {closingTime.Value:h:mm tt}".ToUpper());
+            }
+            else
+            {
+                logger.Info("closingTime has no value!");
+            }
+
+            // SafeInvoke(_form2, () => _form2.showtext = $"SHOWING TIME: {showTime}    TODAY CLOSING TIME: {closingTime.Value:h:mm tt}".ToUpper());
             SafeInvoke(_form2, () => _form2.pagetext = "Page " + (pageNum + 1) + " of " + totalPage);
 
             var form2Type = _form2.GetType();
