@@ -141,7 +141,11 @@ namespace SalonIrisTicketsSchedule
                     {
                         cmd.Parameters.AddWithValue("@today", date);
                         var reader = cmd.ExecuteReader();
-                        if (reader.HasRows)
+                        if (!reader.HasRows)
+                        {
+                            MessageBox.Show("GetSchedules() did not return anything!", "Warning");
+                        }
+                        else
                         {
                             while (reader.Read())
                             {
@@ -317,7 +321,11 @@ namespace SalonIrisTicketsSchedule
                     {
                         cmd.Parameters.AddWithValue("@today", date);
                         var reader = cmd.ExecuteReader();
-                        if (reader.HasRows)
+                        if (!reader.HasRows)
+                        {
+                            MessageBox.Show("GetTickets() did not  return anything!", "Warning");
+                        }
+                        else
                         {
                             while (reader.Read())
                             {
