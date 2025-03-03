@@ -8,11 +8,14 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using SalonIrisTicketsSchedule.Models;
 using System.Configuration;
+using NLog;
 
 namespace SalonIrisTicketsSchedule
 {
     public partial class ConnectionForm : Form
     {
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+
         private string ConnectionString;
         private SqlConnection _connection;
         private int _currentPage;
@@ -144,6 +147,7 @@ namespace SalonIrisTicketsSchedule
                         if (!reader.HasRows)
                         {
                             MessageBox.Show("GetSchedules() did not return anything!", "Warning");
+                            logger.Warn("GetSchedules() did not return anything!");
                         }
                         else
                         {
@@ -220,6 +224,7 @@ namespace SalonIrisTicketsSchedule
                     catch (Exception ex)
                     {
                         Debug.WriteLine(ex.Message);
+                        logger.Error(ex);
                     }
 
                 }
@@ -324,6 +329,7 @@ namespace SalonIrisTicketsSchedule
                         if (!reader.HasRows)
                         {
                             MessageBox.Show("GetTickets() did not  return anything!", "Warning");
+                            logger.Warn("GetTickets() did not  return anything!");
                         }
                         else
                         {
@@ -374,6 +380,8 @@ namespace SalonIrisTicketsSchedule
                     catch (Exception ex)
                     {
                         Debug.WriteLine(ex.Message);
+                        logger.Error(ex);
+
                     }
 
                 }
@@ -390,8 +398,14 @@ namespace SalonIrisTicketsSchedule
 
             var now = DateTime.Now;
 
+            logger.Info($"@RefreshScreen() - {now}");
+
+
             var tickets = GetTickets(now.Date);
             var schedules = GetSchedules(now.Date);
+
+            logger.Info($"Tickets for today: {tickets.Count}");
+            logger.Info($"Schedules for today: {schedules.Count}");
 
             var minutesIncrement = 60 / Properties.Settings.Default.AppointmentNum;
             var excess = now.Minute % minutesIncrement;
