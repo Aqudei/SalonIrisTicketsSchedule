@@ -462,11 +462,11 @@ namespace SalonIrisTicketsSchedule
                     {
                         if (row2appt.Text == "Done")
                         {
-                            this.row2status.BackColor = FirstColor;
-                            this.row2time.BackColor = FirstColor;
-                            this.row2employee.BackColor = FirstColor;
-                            this.row2appt.BackColor = FirstColor;
-                            this.client2.BackColor = FirstColor;
+                            this.row2status.BackColor = SecondColor;
+                            this.row2time.BackColor = SecondColor;
+                            this.row2employee.BackColor = SecondColor;
+                            this.row2appt.BackColor = SecondColor;
+                            this.client2.BackColor = SecondColor;
                         }
                         else
                         {
@@ -581,11 +581,11 @@ namespace SalonIrisTicketsSchedule
                     {
                         if (row4appt.Text == "Done")
                         {
-                            this.row4status.BackColor = FirstColor;
-                            this.row4time.BackColor = FirstColor;
-                            this.row4employee.BackColor = FirstColor;
-                            this.row4appt.BackColor = FirstColor;
-                            this.client4.BackColor = FirstColor;
+                            this.row4status.BackColor = SecondColor;
+                            this.row4time.BackColor = SecondColor;
+                            this.row4employee.BackColor = SecondColor;
+                            this.row4appt.BackColor = SecondColor;
+                            this.client4.BackColor = SecondColor;
                         }
                         else
                         {
@@ -699,11 +699,11 @@ namespace SalonIrisTicketsSchedule
                     {
                         if (row6appt.Text == "Done")
                         {
-                            this.row6status.BackColor = FirstColor;
-                            this.row6time.BackColor = FirstColor;
-                            this.row6employee.BackColor = FirstColor;
-                            this.row6appt.BackColor = FirstColor;
-                            this.client6.BackColor = FirstColor;
+                            this.row6status.BackColor = SecondColor;
+                            this.row6time.BackColor = SecondColor;
+                            this.row6employee.BackColor = SecondColor;
+                            this.row6appt.BackColor = SecondColor;
+                            this.client6.BackColor = SecondColor;
                         }
                         else
                         {
@@ -821,11 +821,11 @@ namespace SalonIrisTicketsSchedule
                     {
                         if (row8appt.Text == "Done")
                         {
-                            this.row8status.BackColor = FirstColor;
-                            this.row8time.BackColor = FirstColor;
-                            this.row8employee.BackColor = FirstColor;
-                            this.row8appt.BackColor = FirstColor;
-                            this.client8.BackColor = FirstColor;
+                            this.row8status.BackColor = SecondColor;
+                            this.row8time.BackColor = SecondColor;
+                            this.row8employee.BackColor = SecondColor;
+                            this.row8appt.BackColor = SecondColor;
+                            this.client8.BackColor = SecondColor;
                         }
                         else
                         {

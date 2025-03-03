@@ -28,7 +28,7 @@
     <UpdateUrl>https://raw.githubusercontent.com/Aqudei/SalonIrisTicketsSchedule/refs/heads/main/SalonIrisTicketsSchedule/publish/</UpdateUrl>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>23</ApplicationRevision>
+    <ApplicationRevision>24</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -71,6 +71,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <ManifestKeyFile>SalonIrisTicketsSchedule_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>32officeicons-31_89708.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
@@ -144,6 +147,7 @@
     <None Include="app.manifest">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="32officeicons-31_89708.ico" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
