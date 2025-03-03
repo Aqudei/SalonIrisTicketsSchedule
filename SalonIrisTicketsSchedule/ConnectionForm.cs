@@ -342,11 +342,11 @@ namespace SalonIrisTicketsSchedule
 
                                 var checkIn = reader.IsDBNull(reader.GetOrdinal("fldCheckedIn"))
                                         ? false
-                                        : reader.GetInt32(reader.GetOrdinal("fldCheckedIn")) == 0 ? false : true;
+                                        : true;
                                 
                                 var completed = reader.IsDBNull(reader.GetOrdinal("fldCompleted"))
                                         ? false
-                                        : reader.GetInt32(reader.GetOrdinal("fldCompleted")) == 0 ? false : true;
+                                        : reader.GetBoolean(reader.GetOrdinal("fldCompleted"));
 
                                 result.Add(new Models.Ticket
                                 {
