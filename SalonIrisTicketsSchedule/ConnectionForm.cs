@@ -645,7 +645,7 @@ namespace SalonIrisTicketsSchedule
                     form2Type.GetProperty(string.Format("employee{0}", i + 1)).SetValue(_form2, pageItem.Stylist);
                     form2Type.GetProperty(string.Format("appt{0}", i + 1)).SetValue(_form2, pageItem.Appointment);
                     form2Type.GetProperty(string.Format("stat{0}", i + 1)).SetValue(_form2, pageItem.Status);
-                    form2Type.GetProperty(string.Format("clientt{0}", i + 1)).SetValue(_form2, pageItem.Client);
+                    form2Type.GetProperty(string.Format("Client{0}", i + 1)).SetValue(_form2, pageItem.Client);
                 });
             }
         }

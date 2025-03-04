@@ -372,482 +372,118 @@ namespace SalonIrisTicketsSchedule
             }
         }
 
-        public string clientt1
+        public void SetClientStatus(Label  client, Label rowStatus, Label rowTime, Label rowEmployee, Label rowAppt, Color firstColor, Color secondColor)
         {
-            get
+            if (client.Text == "Time Block")
             {
-                return this.client1.Text;
+                SetRowColor(rowStatus, rowTime, rowEmployee, rowAppt, client, ColorRed);
             }
-            set
+            else
             {
-                this.client1.Text = value;
-                if (value == "Time Block")
+                if (rowStatus.Text == "Available")
                 {
-                    this.row1status.BackColor = ColorRed;
-                    this.row1time.BackColor = ColorRed;
-                    this.row1employee.BackColor = ColorRed;
-                    this.row1appt.BackColor = ColorRed;
-                    this.client1.BackColor = ColorRed;
+                    SetRowColor(rowStatus, rowTime, rowEmployee, rowAppt, client, ColorGreen);
+                }
+                else if (rowStatus.Text == "Taken")
+                {
+                    SetRowColor(rowStatus, rowTime, rowEmployee, rowAppt, client, rowAppt.Text == "Done" ? firstColor : ColorRed);
                 }
                 else
                 {
-                    if (this.row1status.Text == "Available")
-                    {
-                        this.row1status.BackColor = ColorGreen;
-                        this.row1time.BackColor = ColorGreen;
-                        this.row1employee.BackColor = ColorGreen;
-                        this.row1appt.BackColor = ColorGreen;
-                        this.client1.BackColor = ColorGreen;
-                    }
-                    else if (this.row1status.Text == "Taken")
-                    {
-                        if (row1appt.Text == "Done")
-                        {
-                            this.row1status.BackColor = FirstColor;
-                            this.row1time.BackColor = FirstColor;
-                            this.row1employee.BackColor = FirstColor;
-                            this.row1appt.BackColor = FirstColor;
-                            this.client1.BackColor = FirstColor;
-                        }
-                        else
-                        {
-                            this.row1status.BackColor = ColorRed;
-                            this.row1time.BackColor = ColorRed;
-                            this.row1employee.BackColor = ColorRed;
-                            this.row1appt.BackColor = ColorRed;
-                            this.client1.BackColor = ColorRed;
-                        }
-                    }
-                    else
-                    {
-                        this.row1status.BackColor = FirstColor;
-                        this.row1time.BackColor = FirstColor;
-                        this.row1employee.BackColor = FirstColor;
-                        this.row1appt.BackColor = FirstColor;
-                        this.client1.BackColor = FirstColor;
-                    }
+                    SetRowColor(rowStatus, rowTime, rowEmployee, rowAppt, client, firstColor);
                 }
             }
         }
 
-        public string clientt2
+        private void SetRowColor(Label rowStatus, Label rowTime, Label rowEmployee, Label rowAppt, Label client, Color color)
         {
-            get
-            {
-                return this.client2.Text;
-            }
+            rowStatus.BackColor = color;
+            rowTime.BackColor = color;
+            rowEmployee.BackColor = color;
+            rowAppt.BackColor = color;
+            client.BackColor = color;
+        }
+
+        public string Client1
+        {
+            get => client1.Text;
             set
             {
-                this.client2.Text = value;
-                if (value == "Time Block")
-                {
-                    this.row2status.BackColor = ColorRed;
-                    this.row2time.BackColor = ColorRed;
-                    this.row2employee.BackColor = ColorRed;
-                    this.row2appt.BackColor = ColorRed;
-                    this.client2.BackColor = ColorRed;
-                }
-
-                else
-                {
-                    if (this.row2status.Text == "Available")
-                    {
-                        this.row2status.BackColor = ColorGreen;
-                        this.row2time.BackColor = ColorGreen;
-                        this.row2employee.BackColor = ColorGreen;
-                        this.row2appt.BackColor = ColorGreen;
-                        this.client2.BackColor = ColorGreen;
-                    }
-                    else if (this.row2status.Text == "Taken")
-                    {
-                        if (row2appt.Text == "Done")
-                        {
-                            this.row2status.BackColor = SecondColor;
-                            this.row2time.BackColor = SecondColor;
-                            this.row2employee.BackColor = SecondColor;
-                            this.row2appt.BackColor = SecondColor;
-                            this.client2.BackColor = SecondColor;
-                        }
-                        else
-                        {
-                            this.row2status.BackColor = ColorRed;
-                            this.row2time.BackColor = ColorRed;
-                            this.row2employee.BackColor = ColorRed;
-                            this.row2appt.BackColor = ColorRed;
-                            this.client2.BackColor = ColorRed;
-                        }
-
-
-                    }
-                    else
-                    {
-                        this.row2status.BackColor = SecondColor;
-                        this.row2time.BackColor = SecondColor;
-                        this.row2employee.BackColor = SecondColor;
-                        this.row2appt.BackColor = SecondColor;
-                        this.client2.BackColor = SecondColor;
-                    }
-                }
+                client1.Text = value;
+                SetClientStatus(client1, row1status, row1time, row1employee, row1appt, FirstColor, SecondColor);
             }
         }
 
-        public string clientt3
+        public string Client2
         {
-            get
-            {
-                return this.client3.Text;
-            }
+            get => client2.Text;
             set
             {
-                this.client3.Text = value;
-                if (value == "Time Block")
-                {
-                    this.row3status.BackColor = ColorRed;
-                    this.row3time.BackColor = ColorRed;
-                    this.row3employee.BackColor = ColorRed;
-                    this.row3appt.BackColor = ColorRed;
-                    this.client3.BackColor = ColorRed;
-                }
-                else
-                {
-                    if (this.row3status.Text == "Available")
-                    {
-                        this.row3status.BackColor = ColorGreen;
-                        this.row3time.BackColor = ColorGreen;
-                        this.row3employee.BackColor = ColorGreen;
-                        this.row3appt.BackColor = ColorGreen;
-                        this.client3.BackColor = ColorGreen;
-                    }
-                    else if (this.row3status.Text == "Taken")
-                    {
-                        if (row3appt.Text == "Done")
-                        {
-                            this.row3status.BackColor = FirstColor;
-                            this.row3time.BackColor = FirstColor;
-                            this.row3employee.BackColor = FirstColor;
-                            this.row3appt.BackColor = FirstColor;
-                            this.client3.BackColor = FirstColor;
-                        }
-                        else
-                        {
-                            this.row3status.BackColor = ColorRed;
-                            this.row3time.BackColor = ColorRed;
-                            this.row3employee.BackColor = ColorRed;
-                            this.row3appt.BackColor = ColorRed;
-                            this.client3.BackColor = ColorRed;
-                        }
-
-                    }
-                    else
-                    {
-                        this.row3status.BackColor = FirstColor;
-                        this.row3time.BackColor = FirstColor;
-                        this.row3employee.BackColor = FirstColor;
-                        this.row3appt.BackColor = FirstColor;
-                        this.client3.BackColor = FirstColor;
-                    }
-                }
+                client2.Text = value;
+                SetClientStatus(client2, row2status, row2time, row2employee, row2appt, FirstColor, SecondColor);
             }
         }
 
-        public string clientt4
+        public string Client3
         {
-            get
-            {
-                return this.client4.Text;
-            }
+            get => client3.Text;
             set
             {
-                this.client4.Text = value;
-                if (value == "Time Block")
-                {
-                    this.row4status.BackColor = ColorRed;
-                    this.row4time.BackColor = ColorRed;
-                    this.row4employee.BackColor = ColorRed;
-                    this.row4appt.BackColor = ColorRed;
-                    this.client4.BackColor = ColorRed;
-                }
-                else
-                {
-                    if (this.row4status.Text == "Available")
-                    {
-                        this.row4status.BackColor = ColorGreen;
-                        this.row4time.BackColor = ColorGreen;
-                        this.row4employee.BackColor = ColorGreen;
-                        this.row4appt.BackColor = ColorGreen;
-                        this.client4.BackColor = ColorGreen;
-                    }
-                    else if (this.row4status.Text == "Taken")
-                    {
-                        if (row4appt.Text == "Done")
-                        {
-                            this.row4status.BackColor = SecondColor;
-                            this.row4time.BackColor = SecondColor;
-                            this.row4employee.BackColor = SecondColor;
-                            this.row4appt.BackColor = SecondColor;
-                            this.client4.BackColor = SecondColor;
-                        }
-                        else
-                        {
-                            this.row4status.BackColor = ColorRed;
-                            this.row4time.BackColor = ColorRed;
-                            this.row4employee.BackColor = ColorRed;
-                            this.row4appt.BackColor = ColorRed;
-                            this.client4.BackColor = ColorRed;
-                        }
-
-                    }
-                    else
-                    {
-                        this.row4status.BackColor = SecondColor;
-                        this.row4time.BackColor = SecondColor;
-                        this.row4employee.BackColor = SecondColor;
-                        this.row4appt.BackColor = SecondColor;
-                        this.client4.BackColor = SecondColor;
-                    }
-                }
+                client3.Text = value;
+                SetClientStatus(client3, row3status, row3time, row3employee, row3appt, FirstColor, SecondColor);
             }
         }
 
-        public string clientt5
+        public string Client4
         {
-            get
-            {
-                return this.client5.Text;
-            }
+            get => client4.Text;
             set
             {
-                this.client5.Text = value;
-                if (value == "Time Block")
-                {
-                    this.row5status.BackColor = ColorRed;
-                    this.row5time.BackColor = ColorRed;
-                    this.row5employee.BackColor = ColorRed;
-                    this.row5appt.BackColor = ColorRed;
-                    this.client5.BackColor = ColorRed;
-                }
-                else
-                {
-                    if (this.row5status.Text == "Available")
-                    {
-                        this.row5status.BackColor = ColorGreen;
-                        this.row5time.BackColor = ColorGreen;
-                        this.row5employee.BackColor = ColorGreen;
-                        this.row5appt.BackColor = ColorGreen;
-                        this.client5.BackColor = ColorGreen;
-                    }
-                    else if (this.row5status.Text == "Taken")
-                    {
-                        if (row5appt.Text == "Done")
-                        {
-                            this.row5status.BackColor = FirstColor;
-                            this.row5time.BackColor = FirstColor;
-                            this.row5employee.BackColor = FirstColor;
-                            this.row5appt.BackColor = FirstColor;
-                            this.client5.BackColor = FirstColor;
-                        }
-                        else
-                        {
-                            this.row5status.BackColor = ColorRed;
-                            this.row5time.BackColor = ColorRed;
-                            this.row5employee.BackColor = ColorRed;
-                            this.row5appt.BackColor = ColorRed;
-                            this.client5.BackColor = ColorRed;
-                        }
-
-                    }
-                    else
-                    {
-                        this.row5status.BackColor = FirstColor;
-                        this.row5time.BackColor = FirstColor;
-                        this.row5employee.BackColor = FirstColor;
-                        this.row5appt.BackColor = FirstColor;
-                        this.client5.BackColor = FirstColor;
-                    }
-                }
+                client4.Text = value;
+                SetClientStatus(client4, row4status, row4time, row4employee, row4appt, FirstColor, SecondColor);
             }
         }
 
-        public string clientt6
+        public string Client5
         {
-            get
-            {
-                return this.client6.Text;
-            }
+            get => client5.Text;
             set
             {
-                this.client6.Text = value;
-                if (value == "Time Block")
-                {
-                    this.row6status.BackColor = ColorRed;
-                    this.row6time.BackColor = ColorRed;
-                    this.row6employee.BackColor = ColorRed;
-                    this.row6appt.BackColor = ColorRed;
-                    this.client6.BackColor = ColorRed;
-                }
-                else
-                {
-                    if (this.row6status.Text == "Available")
-                    {
-                        this.row6status.BackColor = ColorGreen;
-                        this.row6time.BackColor = ColorGreen;
-                        this.row6employee.BackColor = ColorGreen;
-                        this.row6appt.BackColor = ColorGreen;
-                        this.client6.BackColor = ColorGreen;
-                    }
-                    else if (this.row6status.Text == "Taken")
-                    {
-                        if (row6appt.Text == "Done")
-                        {
-                            this.row6status.BackColor = SecondColor;
-                            this.row6time.BackColor = SecondColor;
-                            this.row6employee.BackColor = SecondColor;
-                            this.row6appt.BackColor = SecondColor;
-                            this.client6.BackColor = SecondColor;
-                        }
-                        else
-                        {
-                            this.row6status.BackColor = ColorRed;
-                            this.row6time.BackColor = ColorRed;
-                            this.row6employee.BackColor = ColorRed;
-                            this.row6appt.BackColor = ColorRed;
-                            this.client6.BackColor = ColorRed;
-                        }
-
-                    }
-                    else
-                    {
-                        this.row6status.BackColor = SecondColor;
-                        this.row6time.BackColor = SecondColor;
-                        this.row6employee.BackColor = SecondColor;
-                        this.row6appt.BackColor = SecondColor;
-                        this.client6.BackColor = SecondColor;
-                    }
-                }
+                client5.Text = value;
+                SetClientStatus(client5, row5status, row5time, row5employee, row5appt, FirstColor, SecondColor);
             }
         }
 
-        public string clientt7
+        public string Client6
         {
-            get
-            {
-                return this.client7.Text;
-            }
+            get => client6.Text;
             set
             {
-                //if (apptno > 3)
-                //{
-                this.client7.Text = value;
-                if (value == "Time Block")
-                {
-                    this.row7status.BackColor = ColorRed;
-                    this.row7time.BackColor = ColorRed;
-                    this.row7employee.BackColor = ColorRed;
-                    this.row7appt.BackColor = ColorRed;
-                    this.client7.BackColor = ColorRed;
-                }
-                else
-                {
-                    if (this.row7status.Text == "Available")
-                    {
-                        this.row7status.BackColor = ColorGreen;
-                        this.row7time.BackColor = ColorGreen;
-                        this.row7employee.BackColor = ColorGreen;
-                        this.row7appt.BackColor = ColorGreen;
-                        this.client7.BackColor = ColorGreen;
-                    }
-                    else if (this.row7status.Text == "Taken")
-                    {
-                        if (row7appt.Text == "Done")
-                        {
-                            this.row7status.BackColor = FirstColor;
-                            this.row7time.BackColor = FirstColor;
-                            this.row7employee.BackColor = FirstColor;
-                            this.row7appt.BackColor = FirstColor;
-                            this.client7.BackColor = FirstColor;
-                        }
-                        else
-                        {
-                            this.row7status.BackColor = ColorRed;
-                            this.row7time.BackColor = ColorRed;
-                            this.row7employee.BackColor = ColorRed;
-                            this.row7appt.BackColor = ColorRed;
-                            this.client7.BackColor = ColorRed;
-                        }
-
-                    }
-                    else
-                    {
-                        this.row7status.BackColor = FirstColor;
-                        this.row7time.BackColor = FirstColor;
-                        this.row7employee.BackColor = FirstColor;
-                        this.row7appt.BackColor = FirstColor;
-                        this.client7.BackColor = FirstColor;
-                    }
-                }
-                //}
+                client6.Text = value;
+                SetClientStatus(client6, row6status, row6time, row6employee, row6appt, FirstColor, SecondColor);
             }
         }
 
-        public string clientt8
+        public string Client7
         {
-            get
-            {
-                return this.client8.Text;
-            }
+            get => client7.Text;
             set
             {
-                //if (apptno > 3) { 
-                this.client8.Text = value;
-                if (value == "Time Block")
-                {
-                    this.row8status.BackColor = ColorRed;
-                    this.row8time.BackColor = ColorRed;
-                    this.row8employee.BackColor = ColorRed;
-                    this.row8appt.BackColor = ColorRed;
-                    this.client8.BackColor = ColorRed;
-                }
-                else
-                {
-                    if (this.row8status.Text == "Available")
-                    {
-                        this.row8status.BackColor = ColorGreen;
-                        this.row8time.BackColor = ColorGreen;
-                        this.row8employee.BackColor = ColorGreen;
-                        this.row8appt.BackColor = ColorGreen;
-                        this.client8.BackColor = ColorGreen;
-                    }
-                    else if (this.row8status.Text == "Taken")
-                    {
-                        if (row8appt.Text == "Done")
-                        {
-                            this.row8status.BackColor = SecondColor;
-                            this.row8time.BackColor = SecondColor;
-                            this.row8employee.BackColor = SecondColor;
-                            this.row8appt.BackColor = SecondColor;
-                            this.client8.BackColor = SecondColor;
-                        }
-                        else
-                        {
-                            this.row8status.BackColor = ColorRed;
-                            this.row8time.BackColor = ColorRed;
-                            this.row8employee.BackColor = ColorRed;
-                            this.row8appt.BackColor = ColorRed;
-                            this.client8.BackColor = ColorRed;
-                        }
-                    }
-                    else
-                    {
-                        this.row8status.BackColor = SecondColor;
-                        this.row8time.BackColor = SecondColor;
-                        this.row8employee.BackColor = SecondColor;
-                        this.row8appt.BackColor = SecondColor;
-                        this.client8.BackColor = SecondColor;
-                    }
-                }
-                //}
+                client7.Text = value;
+                SetClientStatus(client7, row7status, row7time, row7employee, row7appt, FirstColor, SecondColor);
             }
         }
+
+        public string Client8
+        {
+            get => client8.Text;
+            set
+            {
+                client8.Text = value;
+                SetClientStatus(client8, row8status, row8time, row8employee, row8appt, FirstColor, SecondColor);
+            }
+        }
+
 
         public string stat1
         {
