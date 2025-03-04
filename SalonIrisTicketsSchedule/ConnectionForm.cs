@@ -14,10 +14,14 @@ namespace SalonIrisTicketsSchedule
 {
     public partial class ConnectionForm : Form
     {
+        // Logger will write errors to file
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
+        // database connection string. Will be setup later
         private string ConnectionString;
         private SqlConnection _connection;
+
+        // current page display
         private int _currentPage;
 
         private Form2 _form2 = new Form2();
@@ -31,11 +35,13 @@ namespace SalonIrisTicketsSchedule
 
         private void ConnectionForm_Load(object sender, EventArgs e)
         {
+            // Load settings upload form loading
             LoadSettings();
         }
 
         private void LoadSettings()
         {
+            // Load settings from storage to User Interface
             CompanyTextBox.Text = Properties.Settings.Default.Company;
             ServerNameTextBox.Text = Properties.Settings.Default.Server;
             DatabaseTextBox.Text = Properties.Settings.Default.Database;
@@ -47,6 +53,8 @@ namespace SalonIrisTicketsSchedule
 
         private void SaveAndConnectButton_Click(object sender, EventArgs e)
         {
+            // On button click,
+            // Save Settings and start processing display screens
             SaveSettings();
 
             ConnectionString = $"Data Source={Properties.Settings.Default.Server};Initial Catalog={Properties.Settings.Default.Database};Integrated Security={Properties.Settings.Default.SSPI};UID={Properties.Settings.Default.DBUser};PWD={Properties.Settings.Default.DBPass};MultipleActiveResultSets=True;";
@@ -59,19 +67,29 @@ namespace SalonIrisTicketsSchedule
 
             Hide();
         }
+        /// <summary>
+        /// Safely invokes a specified action on a control, ensuring thread-safe operations.
+        /// </summary>
+        /// <param name="control">The control on which to invoke the action.</param>
+        /// <param name="action">The action to perform on the control.</param>
         private static void SafeInvoke(Control control, Action action)
         {
+            // Check if the current thread is different from the thread that created the control.
             if (control.InvokeRequired)
             {
+                // If so, marshal the action to the control's thread using MethodInvoker.
                 control.Invoke(new MethodInvoker(() => action()));
             }
             else
             {
+                // If the current thread is the same as the control's thread, execute the action directly.
                 action();
             }
         }
+
         private void SaveSettings()
         {
+            // Save Settings from User Interface to storage
             Properties.Settings.Default.Company = CompanyTextBox.Text;
             Properties.Settings.Default.Server = ServerNameTextBox.Text;
             Properties.Settings.Default.Database = DatabaseTextBox.Text;
@@ -98,6 +116,7 @@ namespace SalonIrisTicketsSchedule
 
         public SqlConnection GetOpenConnection()
         {
+            // Open SQL connection if its not already open, otherwise just return previosly opened connection
             if (_connection == null || _connection.State != ConnectionState.Open)
             {
                 _connection = new SqlConnection(ConnectionString);
@@ -107,7 +126,11 @@ namespace SalonIrisTicketsSchedule
             return _connection;
         }
 
-
+        /// <summary>
+        /// Retrieves all schedules for a given stylist on a specified date.
+        /// </summary>
+        /// <param name="date">The date to search for schedules.</param>
+        /// <returns>A collection of schedules for the specified date.</returns>
         private List<Models.Schedule> GetSchedules(DateTime date)
         {
             var result = new List<Models.Schedule>();
@@ -153,6 +176,7 @@ namespace SalonIrisTicketsSchedule
                         {
                             while (reader.Read())
                             {
+                                // Load database value to our Schedule object
                                 result.Add(new Models.Schedule
                                 {
                                     EmployeeID = reader.IsDBNull(reader.GetOrdinal("ID"))
@@ -235,47 +259,6 @@ namespace SalonIrisTicketsSchedule
             return new List<Models.Schedule>();
         }
 
-        private DateTime? GetOpeningTime(DateTime today)
-        {
-            try
-            {
-                var cmdText =
-                        @"SELECT TOP 1 
-                        LEAST(CAST(fldStart AS TIME), CAST(fldStart2 AS TIME), CAST(fldStart3 AS TIME), CAST(fldStart4 AS TIME), CAST(fldStart5 AS TIME), CAST(fldStart6 AS TIME)) AS EarliestTime
-                        FROM tblScheduling
-                        WHERE CAST(fldDate AS DATE) = CAST(@today AS DATE)
-                        ORDER BY EarliestTime ASC;";
-
-                using (var connection = GetOpenConnection())
-                {
-                    using (var cmd = new SqlCommand(cmdText, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@today", today);
-                        var reader = cmd.ExecuteReader();
-                        if (reader.HasRows)
-                        {
-                            while (reader.Read())
-                            {
-                                var ordinal = reader.GetOrdinal("EarliestTime");
-                                var openingDateTime = reader.GetTimeSpan(ordinal);
-                                return today.Date + openingDateTime;
-                            }
-                        }
-
-                        return null;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                logger.Error("Error @ GetOpeningTime()");
-                logger.Error(ex.Message);
-                logger.Error(ex.StackTrace);
-            }
-
-            return null;
-        }
-
         private DateTime? GetClosingTime(DateTime today)
         {
             try
@@ -335,7 +318,11 @@ namespace SalonIrisTicketsSchedule
             }
             return null;
         }
-
+        /// <summary>
+        /// Retrieves all tickets/appointments/bookings of clients on a specified date.
+        /// </summary>
+        /// <param name="date">The date to search for tickets.</param>
+        /// <returns>A collection of tickets for the specified date.</returns>
         private List<Models.Ticket> GetTickets(DateTime date)
         {
             var result = new List<Models.Ticket>();
@@ -375,6 +362,8 @@ namespace SalonIrisTicketsSchedule
                         {
                             while (reader.Read())
                             {
+                                // load database values to our Tickets objects
+
                                 var employeeId = reader.IsDBNull(reader.GetOrdinal("fldEmployeeID"))
                                         ? (int?)null
                                         : reader.GetInt32(reader.GetOrdinal("fldEmployeeID"));
@@ -445,43 +434,62 @@ namespace SalonIrisTicketsSchedule
             logger.Info($"@RefreshScreen() - {now}");
 
 
+            // Retrieve all tickets for given date
             var tickets = GetTickets(now.Date);
+            // Retrieve all stylist schedules for given date
+            // So no need to hit database for every timeslot
+            // make app faster
             var schedules = GetSchedules(now.Date);
 
             logger.Info($"Tickets for today: {tickets.Count}");
             logger.Info($"Schedules for today: {schedules.Count}");
 
+            // Calculates minutes increments based on selected appointment per hour
             var minutesIncrement = 60 / Properties.Settings.Default.AppointmentNum;
             var excess = now.Minute % minutesIncrement;
+
+            // start date/time display will be the recent minutes increment
+            // example for 4 appointment per hour, we have 15 minutes increment,
+            // so if it is 12:52 now, the display will start at 12:45
             var start = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute - excess, 0);
 
             var numRows = Properties.Settings.Default.AppointmentNum == 4 ? 8 : 6;
             var entries = new List<Entry>();
 
+            // Iterate over the list of schedules, ordered by EmployeeID
             foreach (var schedule in schedules.OrderBy(s => s.EmployeeID))
             {
+                // Loop through each time slot within the defined number of rows
                 for (int i = 0; i < numRows; i++)
                 {
+                    // Calculate the start and end times for the current time slot
                     var startTime = start.AddMinutes(i * minutesIncrement);
                     var endTime = startTime.AddMinutes(minutesIncrement);
                     var entryAdded = false;
 
+                    // Retrieve tickets for the current employee, ordered by StartDateTime in descending order
                     var employeeTickets = tickets
                         .Where(t => t.EmployeeId == schedule.EmployeeID)
                         .OrderByDescending(t => t.StartDateTime)
                         .ToArray();
 
+                    // Log the number of tickets the stylist has for the day
                     logger.Info($"Stylist {schedule.FirstName} has {employeeTickets.Length} tickets today.");
 
+                    // Iterate over each ticket for the current employee
                     foreach (var ticket in employeeTickets)
                     {
+                        // Check if the current time slot overlaps with the ticket's time range
                         if (startTime < ticket.StartDateTime || endTime > ticket.EndDateTime)
                             continue;
 
+                        // Determine the appointment status based on the ticket
                         var appointment = GetAppointmentStatus(ticket);
+
+                        // Identify the client; if the ticket description contains "time block", label it as "Time Block"
                         var client = ticket.Description?.ToLower().Contains("time block") == true ? "Time Block" : ticket.ClientName;
 
-                        // With Client
+                        // Add an entry indicating the stylist's schedule matches a client's appointment
                         entries.Add(new Entry
                         {
                             StartDateTime = startTime,
@@ -489,7 +497,6 @@ namespace SalonIrisTicketsSchedule
                             Time = $"{startTime:h:mm tt} - {endTime:h:mm tt}".ToUpper(),
                             Stylist = schedule.FirstName,
                             Client = client,
-                            // Status = ticket.TicketStatus == "Open" || ticket.TicketStatus == "Pending" ? "Taken" : ticket.TicketStatus,
                             Status = "Taken",
                             Appointment = appointment
                         });
@@ -498,12 +505,16 @@ namespace SalonIrisTicketsSchedule
                         break;
                     }
 
+                    // If no entry was added from the tickets, check the stylist's available time slots
                     if (!entryAdded)
                     {
+                        // Iterate over valid time slots for the stylist
                         foreach (var slot in GetValidTimeSlots(schedule))
                         {
+                            // Check if the current time slot fits within the stylist's available slot
                             if (startTime >= slot.Item1 && endTime <= slot.Item2)
                             {
+                                // Add an entry indicating the stylist is available during this time slot
                                 entries.Add(new Entry
                                 {
                                     StartDateTime = startTime,
@@ -521,6 +532,7 @@ namespace SalonIrisTicketsSchedule
                         }
                     }
 
+                    // If no entry was added, add a blank entry for the current time slot
                     if (!entryAdded)
                     {
                         entries.Add(new Entry
@@ -537,6 +549,7 @@ namespace SalonIrisTicketsSchedule
                 }
             }
 
+            // Count total number of screen pages
             var totalPage = (int)Math.Ceiling(entries.Count / (double)numRows);
             if (totalPage == 0)
             {
@@ -545,7 +558,11 @@ namespace SalonIrisTicketsSchedule
             }
 
             DisplayEntries(now, entries, totalPage, _currentPage++, numRows);
+
+            // Go to next page otherwise return to first page.
             _currentPage %= totalPage;
+
+
         }
 
         // Helper method to determine appointment status
@@ -566,6 +583,7 @@ namespace SalonIrisTicketsSchedule
         // Helper method to retrieve valid time slots
         private List<Tuple<DateTime, DateTime>> GetValidTimeSlots(Schedule schedule)
         {
+            // Gather all time slot shchedule of stylist into a Tuple (from, to)
             var date = schedule.Date?.Date ?? DateTime.MinValue;
             var timeSlots = new List<Tuple<DateTime, DateTime>>
             {
@@ -584,19 +602,22 @@ namespace SalonIrisTicketsSchedule
         {
             logger.Info($"@DisplayEntries(); PageItems count: {entries.Count}");
 
+            // Get current items to be displayed based on page Number
             var pageItems = entries.Skip(pageNum * perPage).Take(perPage).OrderBy(i => i.StartDateTime).ToArray();
+
+            // Just exit function if not items to be displayed.
             if (pageItems.Length <= 0)
             {
                 return;
             }
 
             var closingTime = GetClosingTime(now.Date);
-            var showTime = $"{pageItems?.FirstOrDefault().StartDateTime:h:mm tt} to {pageItems.LastOrDefault()?.EndDateTime:h:mm tt}";
+            var showingTime = $"{pageItems?.FirstOrDefault().StartDateTime:h:mm tt} to {pageItems.LastOrDefault()?.EndDateTime:h:mm tt}";
 
             // var openingTime = GetOpeningTime(now.Date);
             if (closingTime.HasValue)
             {
-                SafeInvoke(_form2, () => _form2.showtext = $"SHOWING TIME: {showTime}    TODAY CLOSING TIME: {closingTime.Value:h:mm tt}".ToUpper());
+                SafeInvoke(_form2, () => _form2.showtext = $"SHOWING TIME: {showingTime}    TODAY CLOSING TIME: {closingTime.Value:h:mm tt}".ToUpper());
             }
             else
             {
@@ -608,6 +629,8 @@ namespace SalonIrisTicketsSchedule
 
             var form2Type = _form2.GetType();
 
+
+            // iterate on all row items and display them in user interface/ form2
             for (int i = 0; i < pageItems.Count(); i++)
             {
                 var pageItem = pageItems[i];
